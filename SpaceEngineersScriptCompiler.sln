@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler", "SpaceEngineersScriptCompiler\SpaceEngineersScriptCompiler.csproj", "{7B653641-251F-460E-8AF7-E8B7BCB48D66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler.Tests", "SpaceEngineersScriptCompiler.Tests\SpaceEngineersScriptCompiler.Tests.csproj", "{2EF0950D-7C2B-4264-A4A4-68980470DA64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler.Library", "SpaceEngineersScriptCompiler.Library\SpaceEngineersScriptCompiler.Library.csproj", "{FABDDCE8-1BA7-4317-957D-309972A32E66}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B653641-251F-460E-8AF7-E8B7BCB48D66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B653641-251F-460E-8AF7-E8B7BCB48D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B653641-251F-460E-8AF7-E8B7BCB48D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B653641-251F-460E-8AF7-E8B7BCB48D66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EF0950D-7C2B-4264-A4A4-68980470DA64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EF0950D-7C2B-4264-A4A4-68980470DA64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EF0950D-7C2B-4264-A4A4-68980470DA64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EF0950D-7C2B-4264-A4A4-68980470DA64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FABDDCE8-1BA7-4317-957D-309972A32E66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FABDDCE8-1BA7-4317-957D-309972A32E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FABDDCE8-1BA7-4317-957D-309972A32E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FABDDCE8-1BA7-4317-957D-309972A32E66}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
