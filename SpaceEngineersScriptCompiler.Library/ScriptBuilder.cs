@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using SpaceEngineersScriptCompiler.Library.Exception;
+using SpaceEngineersScriptCompiler.Library.ScriptParts;
 
 namespace SpaceEngineersScriptCompiler.Library
 {
@@ -16,26 +15,43 @@ namespace SpaceEngineersScriptCompiler.Library
             FileWrapper = fileWrapper;
         }
 
-        public void Build(string filePath)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <exception cref="System.IO.FileNotFoundException"></exception>
+        /// <exception cref="SpaceEngineersScriptCompiler.Library.Exception.InvalidFileFormatException"></exception>
+        /// <returns></returns>
+        public MainScriptPart Build(string filePath)
+        {
+            ThrowExceptionIfFileDoesNotExit(filePath);
+
+            var fileContents = FileWrapper.ReadAllText(filePath);
+            var syntaxTree = CSharpSyntaxTree.ParseText(fileContents);
+            var mainScript = new MainScriptPart(syntaxTree);
+
+            ThrowExceptionIfScriptDoesNotValidate(mainScript, filePath);
+
+            return mainScript;
+        }
+
+        private void ThrowExceptionIfFileDoesNotExit(string filePath)
         {
             if (!FileWrapper.Exists(filePath))
             {
                 var error = String.Format("Unable to process file.  File not found: {0}", filePath);
                 throw new FileNotFoundException(error);
             }
+        }
 
-            var fileContents = FileWrapper.ReadAllText(filePath);
-
-            var syntaxTree = CSharpSyntaxTree.ParseText(fileContents);
-
-            // GetDiagnostics returns parse errors surrounding the given piece of code.
-            // This does not need to include all constructs (namespace, class) but it must be parsable.
-            if (syntaxTree.GetDiagnostics().Any())
+        private static void ThrowExceptionIfScriptDoesNotValidate(MainScriptPart scriptPart, string fileName)
+        {
+            if (!scriptPart.Validate())
             {
-                var error = String.Format("Unable to process file.  Parse error in file: {0}", filePath);
+                var error = String.Format("Unable to process file.  Parse error in file: {0}", fileName);
                 throw new InvalidFileFormatException(error);
             }
-
         }
+
     }
 }

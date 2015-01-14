@@ -86,12 +86,16 @@
     <Compile Include="File\IFileAccess.cs" />
     <Compile Include="ScriptBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScriptParts\AbstractScriptPart.cs" />
+    <Compile Include="ScriptParts\MainScriptPart.cs" />
+    <Compile Include="ScriptParts\ObjectScriptPart.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SyntaxTreeWalkers\" />
+    <Folder Include="TreeWalkers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

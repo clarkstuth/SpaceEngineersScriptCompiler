@@ -74,5 +74,21 @@ namespace SpaceEngineersScriptCompiler.Tests
             }
         }
 
+        [TestMethod]
+        public void BuildShouldReturnAMainScriptPartWithMatchingCodeBlockIfSyntaxIsValid()
+        {
+            var fileContents = @"
+            void Main() { var myObj = new MyObject();  var result = myObj.SomeMethod(); }";
+
+            Mock.Arrange(() => FileAccessStub.ReadAllText(GoodFilePath)).Returns(fileContents);
+
+            
+            var result = Builder.Build(GoodFilePath);
+            
+            Assert.AreEqual(fileContents, result.GetCode());
+        }
+
+
+
     }
 }
