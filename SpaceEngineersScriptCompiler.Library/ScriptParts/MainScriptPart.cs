@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -38,8 +39,16 @@ namespace SpaceEngineersScriptCompiler.Library.ScriptParts
             {
                 if (node.GetType() == MainNodeType)
                 {
-                    MainNode = node;
-                    return;
+                    var mainMethodQuery =
+                        from token in node.ChildTokens()
+                        where token.Text == "Main"
+                        select token;
+
+                    if (mainMethodQuery.Any())
+                    {
+                        MainNode = node;
+                        return;
+                    }
                 }
 
                 base.Visit(node);
