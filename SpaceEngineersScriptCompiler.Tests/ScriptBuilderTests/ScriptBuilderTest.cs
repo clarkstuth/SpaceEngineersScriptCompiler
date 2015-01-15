@@ -12,7 +12,7 @@ namespace SpaceEngineersScriptCompiler.Tests
         protected ScriptBuilder Builder { get; set; }
         protected string GoodFilePath { get; set; }
 
-        IFileAccess FileAccessStub { get; set; }
+        protected IFileAccess FileAccessStub { get; set; }
 
         [TestInitialize]
         public void SetUp()
@@ -55,8 +55,7 @@ namespace SpaceEngineersScriptCompiler.Tests
         [ExpectedException(typeof(InvalidFileFormatException))]
         public void BuildShouldThrowAnExceptionIfFileContainsNoParsableSyntaxTree()
         {
-            var fileContents = @"
-                Clark\'s blog post!
+            var fileContents = @"Clark\'s blog post!
                 10 reasons I love cats.
                 void Main() {int i = 0;}";
 
@@ -77,8 +76,7 @@ namespace SpaceEngineersScriptCompiler.Tests
         [TestMethod]
         public void BuildShouldReturnAMainScriptPartWithMatchingCodeBlockIfSyntaxIsValid()
         {
-            var fileContents = @"
-            void Main() { var myObj = new MyObject();  var result = myObj.SomeMethod(); }";
+            var fileContents = @"void Main() { var myObj = new MyObject();  var result = myObj.SomeMethod(); }";
 
             Mock.Arrange(() => FileAccessStub.ReadAllText(GoodFilePath)).Returns(fileContents);
 
@@ -87,6 +85,6 @@ namespace SpaceEngineersScriptCompiler.Tests
             
             Assert.AreEqual(fileContents, result.GetCode());
         }
-        
+
     }
 }
