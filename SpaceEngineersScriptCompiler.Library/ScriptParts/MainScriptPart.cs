@@ -28,6 +28,11 @@ namespace SpaceEngineersScriptCompiler.Library.ScriptParts
 
             SyntaxNode MainNode = null;
 
+            /// <summary>
+            /// Finds the first SyntaxNode containing a Main() method and returns it.
+            /// </summary>
+            /// <param name="rootNode"></param>
+            /// <returns>SyntaxNode containing a Main() method.</returns>
             public SyntaxNode FindMain(SyntaxNode rootNode)
             {
                 MainNode = null;
