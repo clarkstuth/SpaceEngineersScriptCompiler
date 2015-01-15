@@ -18,7 +18,13 @@ namespace SpaceEngineersScriptCompiler.Library.ScriptParts
             var scriptWalker = new MainFindingScriptWalker();
             var mainMethodNode = scriptWalker.FindMain(treeRoot);
 
-            return mainMethodNode.GetText().ToString().Trim();
+            var mainMethodCode = mainMethodNode.GetText().ToString();
+
+            // need to remove public, private, protected from the front of this method.
+            // easy way to do this is to just find where void starts.
+            var voidLocation = mainMethodCode.IndexOf("void");
+
+            return mainMethodCode.Substring(voidLocation).Trim();
         }
 
         class MainFindingScriptWalker : SyntaxWalker

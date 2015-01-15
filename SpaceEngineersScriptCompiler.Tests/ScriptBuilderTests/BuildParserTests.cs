@@ -8,68 +8,100 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
     [TestClass]
     public class BuildParserTests : ScriptBuilderTest
     {
-        /// <summary>
-        /// Data provider for unit testing parsing of Main method.
-        /// </summary>
-        /// <returns>Key is a specific code segment to test.  Value is the expected code result.
-        /// </returns>
-        private Dictionary<string, string> RemoveNamespaceAndClassesDataProvider()
+        private void RunCodeParseTestAndAssert(string code, string expectedCode)
         {
-            return new Dictionary<string, string>
-            {
-                {
-                    //simple example with namespace and class
-                    @"
+            Mock.Arrange(() => FileAccessStub.ReadAllText(GoodFilePath)).Returns(code);
+
+            var scriptPart = Builder.Build(GoodFilePath);
+
+            Assert.AreEqual(expectedCode, scriptPart.GetCode());
+        }
+
+        [TestMethod]
+        public void BuildShouldReturnJustMainRemovingNamespaceAndClass()
+        {
+            var code = @"
                     namespace MyApp.MyNamespace.SubNamespace
                     {
                         public class MyClass
                         {
                             public void Main() {var i = 0;}
                         }
-                    }",
-                    "public void Main() {var i = 0;}"
-                },
+                    }";
 
-                    // example with just a class
-                {
-                    "public class SomeOtherClass { public void Main() {Console.WriteLine(\"Hi!\");}}",
-                    "public void Main() {Console.WriteLine(\"Hi!\");}"
-                },
+            var expectedCode = "void Main() {var i = 0;}";
 
-                {
-                    // example adding using statements
-                    @" using System;
-                       using System.Collections.Generic;
-
-                       namespace MyNamepsace { class YetAnotherClass { public void Main() {/*I'm an empty main method!*/} } }",
-                    "public void Main() {/*I'm an empty main method!*/}"
-                },
-
-                    // example where Main is not the first method
-
-                {
-                    "using System; namespace AGreatNamespace { class ClassyClass { private void DoSomething() {} public void Main() {GetString();} } }",
-                    "public void Main() {GetString();}"
-                }
-
-            };
+            RunCodeParseTestAndAssert(code, expectedCode);
         }
 
         [TestMethod]
-        public void BuildShouldRemoveNamespaceAndClassDeclarationsFromCodeSurroundingMain()
+        public void BuildShouldReturnJustMainRemovingClass()
         {
-            (from testCase in RemoveNamespaceAndClassesDataProvider() select testCase).ToList().ForEach((keyValuePair) => {
+            var code = "public class SomeOtherClass { public void Main() {Console.WriteLine(\"Hi!\");}}";
 
-                var code = keyValuePair.Key;
-                var expectedCode = keyValuePair.Value;
+            var expectedCode = "void Main() {Console.WriteLine(\"Hi!\");}";
 
-                Mock.Arrange(() => FileAccessStub.ReadAllText(GoodFilePath)).Returns(code);
-
-                var scriptPart = Builder.Build(GoodFilePath);
-
-                Assert.AreEqual(expectedCode, scriptPart.GetCode());
-            });
+            RunCodeParseTestAndAssert(code, expectedCode);
         }
+
+        [TestMethod]
+        public void BuildShouldReturnJustMainRemovingUsingNamespaceAndClass()
+        {
+            var code = @" using System;
+                       using System.Collections.Generic;
+
+                       namespace MyNamepsace { class YetAnotherClass { public void Main() {/*I'm an empty main method!*/} } }";
+
+            var expectedCode = "void Main() {/*I'm an empty main method!*/}";
+
+            RunCodeParseTestAndAssert(code, expectedCode);
+        }
+
+        [TestMethod]
+        public void BuildShouldReturnJustMainRemovingUsingNamespaceClassAndLeadingMethod()
+        {
+            var code = "using System; namespace AGreatNamespace { class ClassyClass { private void DoSomething() {} public void Main() {var i = 1 + 2;} } }";
+
+            var expectedCode = "void Main() {var i = 1 + 2;}";
+
+            RunCodeParseTestAndAssert(code, expectedCode);
+        }
+
+        [TestMethod]
+        public void BuildShouldReturnMainPlusAReferencedFunctionFromTheSameFile()
+        {
+            var code = @"
+            using System;
+            
+            namespace MyNamespace {
+                class MyOpenDoorScript {
+                    public void Main() {
+                        var i = 3 / 2 + 7;
+                        MyOtherMethod(i);
+                    }
+
+                    private void MyOtherMethod(int i) {
+                        i = 7;
+                    }
+                }
+            }";
+
+            var expectedCode = @"void Main() {
+                var i = 3 / 2 + 7;
+                MyOtherMethod(i);
+            }
+
+            void MyOtherMethod(int i) {
+                i = 7;
+            }
+";
+
+            RunCodeParseTestAndAssert(code, expectedCode);
+
+        }
+
+        // BuildShouldIgnoreCallsToGridTerminalSystem
+        // 
 
     }
 }

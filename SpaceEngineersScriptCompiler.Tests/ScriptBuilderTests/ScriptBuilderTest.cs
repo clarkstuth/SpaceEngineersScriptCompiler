@@ -85,6 +85,6 @@ namespace SpaceEngineersScriptCompiler.Tests
             
             Assert.AreEqual(fileContents, result.GetCode());
         }
-
+        
     }
 }
