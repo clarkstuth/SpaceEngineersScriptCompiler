@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.CodeAnalysis;
+using System;
 
 namespace SpaceEngineersScriptCompiler.Library.ScriptParts
 {
     class LocalMethodScriptPart : AbstractScriptPart
     {
+        public LocalMethodScriptPart(SyntaxTree tree)
+            : base(tree)
+        {
+        }
 
+        public override string GetCode()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

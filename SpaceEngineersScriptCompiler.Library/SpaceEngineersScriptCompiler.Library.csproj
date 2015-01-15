@@ -85,6 +85,8 @@
   <ItemGroup>
     <Compile Include="Exception\InvalidFileFormatException.cs" />
     <Compile Include="File\FileImplementation.cs" />
+    <Compile Include="File\FileMetadataCollection.cs" />
+    <Compile Include="File\FileMetadataModel.cs" />
     <Compile Include="File\IFileAccess.cs" />
     <Compile Include="ScriptBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
