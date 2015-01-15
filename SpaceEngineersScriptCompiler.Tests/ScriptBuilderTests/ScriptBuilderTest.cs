@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpaceEngineersScriptCompiler.Library;
 using SpaceEngineersScriptCompiler.Library.Exception;
+using SpaceEngineersScriptCompiler.Library.File;
 using Telerik.JustMock;
 
 namespace SpaceEngineersScriptCompiler.Tests
@@ -10,9 +11,11 @@ namespace SpaceEngineersScriptCompiler.Tests
     public class ScriptBuilderTest
     {
         protected ScriptBuilder Builder { get; set; }
+
         protected string GoodFilePath { get; set; }
 
         protected IFileAccess FileAccessStub { get; set; }
+        protected FileMetadataCollection FileCollection { get; set; }
 
         [TestInitialize]
         public void SetUp()
@@ -22,7 +25,7 @@ namespace SpaceEngineersScriptCompiler.Tests
             FileAccessStub = Mock.Create<IFileAccess>();
             Mock.Arrange(() => FileAccessStub.Exists(GoodFilePath)).Returns(true);
 
-            Builder = new ScriptBuilder(FileAccessStub);
+            Builder = new ScriptBuilder(FileAccessStub, FileCollection);
         }
 
         [TestCleanup]

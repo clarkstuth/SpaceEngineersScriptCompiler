@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
 using SpaceEngineersScriptCompiler.Library.Exception;
+using SpaceEngineersScriptCompiler.Library.File;
 using SpaceEngineersScriptCompiler.Library.ScriptParts;
 
 namespace SpaceEngineersScriptCompiler.Library
@@ -9,8 +10,10 @@ namespace SpaceEngineersScriptCompiler.Library
     public class ScriptBuilder
     {
         protected IFileAccess FileWrapper { get; set; }
+        protected FileMetadataCollection FileCollection { get; set; }
+        protected string FileName { get; set; }
 
-        public ScriptBuilder(IFileAccess fileWrapper)
+        public ScriptBuilder(IFileAccess fileWrapper, FileMetadataCollection fileCollection)
         {
             FileWrapper = fileWrapper;
         }

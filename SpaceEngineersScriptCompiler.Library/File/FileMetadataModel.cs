@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 
 namespace SpaceEngineersScriptCompiler.Library.File
 {
-    class FileMetadataModel
+    public class FileMetadataModel
     {
         /// <summary>
         /// Path to this particular file.

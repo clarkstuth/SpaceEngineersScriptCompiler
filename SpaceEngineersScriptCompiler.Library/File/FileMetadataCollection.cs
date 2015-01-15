@@ -2,7 +2,7 @@
 
 namespace SpaceEngineersScriptCompiler.Library.File
 {
-    class FileMetadataCollection : BlockingCollection<FileMetadataModel>
+    public class FileMetadataCollection : BlockingCollection<FileMetadataModel>
     {
     }
 }
