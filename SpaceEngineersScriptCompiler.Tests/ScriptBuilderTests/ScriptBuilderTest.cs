@@ -9,8 +9,8 @@ namespace SpaceEngineersScriptCompiler.Tests
     [TestClass]
     public class ScriptBuilderTest
     {
-        ScriptBuilder Builder { get; set; }
-        string GoodFilePath { get; set; }
+        protected ScriptBuilder Builder { get; set; }
+        protected string GoodFilePath { get; set; }
 
         IFileAccess FileAccessStub { get; set; }
 
@@ -87,8 +87,6 @@ namespace SpaceEngineersScriptCompiler.Tests
             
             Assert.AreEqual(fileContents, result.GetCode());
         }
-
-
-
+        
     }
 }

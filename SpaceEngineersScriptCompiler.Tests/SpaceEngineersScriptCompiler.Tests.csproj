@@ -53,7 +53,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ScriptBuilderTest.cs" />
+    <Compile Include="ScriptBuilderTests\BuildParserTests.cs" />
+    <Compile Include="ScriptBuilderTests\ScriptBuilderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
