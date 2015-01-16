@@ -97,6 +97,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ScriptBuilderTests\AbstractScriptBuilderTest.cs" />
     <Compile Include="ScriptBuilderTests\BuildParserTests.cs" />
     <Compile Include="ScriptBuilderTests\ScriptBuilderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

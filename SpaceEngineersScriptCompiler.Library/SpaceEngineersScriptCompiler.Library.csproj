@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataExtensions\CSharpSyntaxExtensions.cs" />
     <Compile Include="DataExtensions\CSharpSyntaxTreeExtensions.cs" />
     <Compile Include="Exception\InvalidFileFormatException.cs" />
     <Compile Include="File\FileImplementation.cs" />

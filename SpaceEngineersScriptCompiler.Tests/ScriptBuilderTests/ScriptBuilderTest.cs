@@ -1,50 +1,14 @@
 ﻿using System.IO;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SpaceEngineersScriptCompiler.Library;
-using SpaceEngineersScriptCompiler.Library.Exception;
-using SpaceEngineersScriptCompiler.Library.File;
+using SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests;
 using Telerik.JustMock;
 
 namespace SpaceEngineersScriptCompiler.Tests
 {
     [TestClass]
-    public class ScriptBuilderTest
+    public class ScriptBuilderTest : AbstractScriptBuilderTest
     {
-        protected ScriptBuilder Builder { get; set; }
-
-        protected string GoodFilePath { get; set; }
-
-        protected ThreadSafeFileCollection FileCollection { get; set; }
-
-        [TestInitialize]
-        public void SetUp()
-        {
-            GoodFilePath = @"C:\Users\MyUser\SomeValidProject\SomeValidFile.cs";
-
-            FileCollection = new ThreadSafeFileCollection();
-            
-            Builder = new ScriptBuilder(FileCollection);
-        }
-
-        [TestCleanup]
-        public void TearDown()
-        {
-            Mock.Reset();
-        }
-
-        protected FileMetadataModel CreateFileMetadata(string fileName, string code)
-        {
-            var syntaxTree = CSharpSyntaxTree.ParseText(code);
-            return new FileMetadataModel(fileName, syntaxTree);
-        }
-
-        protected void AddFileMetadata(string fileName, string code)
-        {
-            var metadata = CreateFileMetadata(fileName, code);
-            FileCollection.TryAdd(fileName, metadata);
-        }
-
+        
         [TestMethod]
         [ExpectedException(typeof(FileNotFoundException))]
         public void BuildShouldThrowAnExceptionOnInvalidFilePath()
@@ -66,12 +30,16 @@ namespace SpaceEngineersScriptCompiler.Tests
         [TestMethod]
         public void BuildShouldReturnAMainScriptPartWithMatchingCodeBlockIfSyntaxIsValid()
         {
-            var fileContents = @"void Main() { var myObj = new MyObject();  var result = myObj.SomeMethod(); }";
+            var fileContents =
+                @"namespace MyNamespace { class MyClass { void Main() {var myObj = new MyObject();  var result = myObj.SomeMethod();}}}";
+
+            var expectedCode = "void Main() {var myObj = new MyObject();  var result = myObj.SomeMethod();}";
+
             AddFileMetadata(GoodFilePath, fileContents);
 
             var result = Builder.Build(GoodFilePath);
             
-            Assert.AreEqual(fileContents, result.GetCode());
+            Assert.AreEqual(expectedCode, result.GetCode());
         }
         
     }

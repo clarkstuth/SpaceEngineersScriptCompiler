@@ -9,8 +9,6 @@ namespace SpaceEngineersScriptCompiler.Library
 {
     public class ScriptBuilder
     {
-        protected static readonly string MainMethodName = "Main";
-
         protected ThreadSafeFileCollection FileCollection { get; set; }
         protected string FileName { get; set; }
 
@@ -30,10 +28,12 @@ namespace SpaceEngineersScriptCompiler.Library
         {
             ThrowExceptionIfFileDoesNotExist(filePath);
 
+            var mainClassName = FileCollection[filePath].MainMethodClassName;
+
             var classMap = FileCollection[filePath].ClassMap;
 
             // TODO: Identify classes that contain a void Main() {} method.  Find a way to select those at this level.
-            var mainSyntaxTree = classMap[MainMethodName];
+            var mainSyntaxTree = classMap[mainClassName];
 
             var mainScript = new MainScriptPart(mainSyntaxTree);
 
