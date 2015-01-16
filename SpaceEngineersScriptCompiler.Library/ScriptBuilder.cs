@@ -9,13 +9,14 @@ namespace SpaceEngineersScriptCompiler.Library
 {
     public class ScriptBuilder
     {
-        protected IFileAccess FileWrapper { get; set; }
-        protected FileMetadataCollection FileCollection { get; set; }
+        protected static readonly string MainMethodName = "Main";
+
+        protected ThreadSafeFileCollection FileCollection { get; set; }
         protected string FileName { get; set; }
 
-        public ScriptBuilder(IFileAccess fileWrapper, FileMetadataCollection fileCollection)
+        public ScriptBuilder(ThreadSafeFileCollection fileCollection)
         {
-            FileWrapper = fileWrapper;
+            FileCollection = fileCollection;
         }
 
         /// <summary>
@@ -27,32 +28,24 @@ namespace SpaceEngineersScriptCompiler.Library
         /// <returns></returns>
         public MainScriptPart Build(string filePath)
         {
-            ThrowExceptionIfFileDoesNotExit(filePath);
+            ThrowExceptionIfFileDoesNotExist(filePath);
 
-            var fileContents = FileWrapper.ReadAllText(filePath);
-            var syntaxTree = CSharpSyntaxTree.ParseText(fileContents);
-            var mainScript = new MainScriptPart(syntaxTree);
+            var classMap = FileCollection[filePath].ClassMap;
 
-            ThrowExceptionIfScriptDoesNotValidate(mainScript, filePath);
+            // TODO: Identify classes that contain a void Main() {} method.  Find a way to select those at this level.
+            var mainSyntaxTree = classMap[MainMethodName];
+
+            var mainScript = new MainScriptPart(mainSyntaxTree);
 
             return mainScript;
         }
 
-        private void ThrowExceptionIfFileDoesNotExit(string filePath)
+        private void ThrowExceptionIfFileDoesNotExist(string filePath)
         {
-            if (!FileWrapper.Exists(filePath))
+            if (!FileCollection.Keys.Contains(filePath))
             {
                 var error = String.Format("Unable to process file.  File not found: {0}", filePath);
                 throw new FileNotFoundException(error);
-            }
-        }
-
-        private static void ThrowExceptionIfScriptDoesNotValidate(MainScriptPart scriptPart, string fileName)
-        {
-            if (!scriptPart.Validate())
-            {
-                var error = String.Format("Unable to process file.  Parse error in file: {0}", fileName);
-                throw new InvalidFileFormatException(error);
             }
         }
 

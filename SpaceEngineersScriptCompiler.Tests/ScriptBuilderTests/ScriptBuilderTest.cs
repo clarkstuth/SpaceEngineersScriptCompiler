@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpaceEngineersScriptCompiler.Library;
 using SpaceEngineersScriptCompiler.Library.Exception;
@@ -14,18 +15,16 @@ namespace SpaceEngineersScriptCompiler.Tests
 
         protected string GoodFilePath { get; set; }
 
-        protected IFileAccess FileAccessStub { get; set; }
-        protected FileMetadataCollection FileCollection { get; set; }
+        protected ThreadSafeFileCollection FileCollection { get; set; }
 
         [TestInitialize]
         public void SetUp()
         {
             GoodFilePath = @"C:\Users\MyUser\SomeValidProject\SomeValidFile.cs";
 
-            FileAccessStub = Mock.Create<IFileAccess>();
-            Mock.Arrange(() => FileAccessStub.Exists(GoodFilePath)).Returns(true);
-
-            Builder = new ScriptBuilder(FileAccessStub, FileCollection);
+            FileCollection = new ThreadSafeFileCollection();
+            
+            Builder = new ScriptBuilder(FileCollection);
         }
 
         [TestCleanup]
@@ -34,13 +33,23 @@ namespace SpaceEngineersScriptCompiler.Tests
             Mock.Reset();
         }
 
+        protected FileMetadataModel CreateFileMetadata(string fileName, string code)
+        {
+            var syntaxTree = CSharpSyntaxTree.ParseText(code);
+            return new FileMetadataModel(fileName, syntaxTree);
+        }
+
+        protected void AddFileMetadata(string fileName, string code)
+        {
+            var metadata = CreateFileMetadata(fileName, code);
+            FileCollection.TryAdd(fileName, metadata);
+        }
+
         [TestMethod]
         [ExpectedException(typeof(FileNotFoundException))]
         public void BuildShouldThrowAnExceptionOnInvalidFilePath()
         {
             var badfilePath = @"Z:\Some\BadFile.cs";
-
-            Mock.Arrange(() => FileAccessStub.Exists(badfilePath)).Returns(false);
 
             try
             {
@@ -55,35 +64,11 @@ namespace SpaceEngineersScriptCompiler.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidFileFormatException))]
-        public void BuildShouldThrowAnExceptionIfFileContainsNoParsableSyntaxTree()
-        {
-            var fileContents = @"Clark\'s blog post!
-                10 reasons I love cats.
-                void Main() {int i = 0;}";
-
-            Mock.Arrange(() => FileAccessStub.ReadAllText(GoodFilePath)).Returns(fileContents);
-
-            try
-            {
-                Builder.Build(GoodFilePath);
-            }
-            catch (InvalidFileFormatException e)
-            {
-                var expectedMessage = "Unable to process file.  Parse error in file: " + GoodFilePath;
-                Assert.AreEqual(expectedMessage, e.Message);
-                throw;
-            }
-        }
-
-        [TestMethod]
         public void BuildShouldReturnAMainScriptPartWithMatchingCodeBlockIfSyntaxIsValid()
         {
             var fileContents = @"void Main() { var myObj = new MyObject();  var result = myObj.SomeMethod(); }";
+            AddFileMetadata(GoodFilePath, fileContents);
 
-            Mock.Arrange(() => FileAccessStub.ReadAllText(GoodFilePath)).Returns(fileContents);
-
-            
             var result = Builder.Build(GoodFilePath);
             
             Assert.AreEqual(fileContents, result.GetCode());

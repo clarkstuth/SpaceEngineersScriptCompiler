@@ -1,7 +1,8 @@
-﻿using System.IO;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using SpaceEngineersScriptCompiler.Library.DataExtensions;
 using System.Collections.Concurrent;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis;
+using System.IO;
 
 namespace SpaceEngineersScriptCompiler.Library.File
 {
@@ -10,11 +11,32 @@ namespace SpaceEngineersScriptCompiler.Library.File
         /// <summary>
         /// Path to this particular file.
         /// </summary>
-        public string FilePath { get; set; }
+        public string FilePath { get; protected set; }
 
         /// <summary>
-        /// Map of methods within this given file and the corresponding method's syntax tree.
+        /// Map of classes that exist in a corresponding file's syntax tree.
         /// </summary>
-        public ConcurrentDictionary<string, SyntaxTree> MethodMap { get; set; }
+        public ConcurrentDictionary<string, SyntaxTree> ClassMap { get; protected set; }
+
+        // TODO : Throw an exception if the SyntaxTree is invalid. (Somewhere)
+
+        public FileMetadataModel(string filePath, SyntaxTree baseSyntaxTree)
+        {
+            FilePath = filePath;
+            ClassMap = new ConcurrentDictionary<string, SyntaxTree>();
+
+            FillClassMap(baseSyntaxTree);
+        }
+
+        private void FillClassMap(SyntaxTree syntaxTree)
+        {
+            var classes = syntaxTree.FindClasses();
+            foreach (var className in classes.Keys)
+            {
+                var classSyntaxTree = CSharpSyntaxTree.ParseText(classes[className].GetText());
+                ClassMap.TryAdd(className, classSyntaxTree);
+            }
+        }
+
     }
 }

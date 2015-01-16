@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SpaceEngineersScriptCompiler.Library.File;
 using System.Collections.Generic;
 using System.Linq;
 using Telerik.JustMock;
@@ -10,7 +12,7 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
     {
         private void RunCodeParseTestAndAssert(string code, string expectedCode)
         {
-            Mock.Arrange(() => FileAccessStub.ReadAllText(GoodFilePath)).Returns(code);
+            AddFileMetadata(GoodFilePath, code);
 
             var scriptPart = Builder.Build(GoodFilePath);
 
@@ -50,7 +52,7 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
             var code = @" using System;
                        using System.Collections.Generic;
 
-                       namespace MyNamepsace { class YetAnotherClass { public void Main() {/*I'm an empty main method!*/} } }";
+                       namespace MyNamepsace { class Main { public void Main() {/*I'm an empty main method!*/} } }";
 
             var expectedCode = "void Main() {/*I'm an empty main method!*/}";
 
@@ -60,14 +62,14 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
         [TestMethod]
         public void BuildShouldReturnJustMainRemovingUsingNamespaceClassAndLeadingMethod()
         {
-            var code = "using System; namespace AGreatNamespace { class ClassyClass { private void DoSomething() {} public void Main() {var i = 1 + 2;} } }";
+            var code = "using System; namespace AGreatNamespace { public static class Main { private void DoSomething() {} public void Main() {var i = 1 + 2;} } }";
 
             var expectedCode = "void Main() {var i = 1 + 2;}";
 
             RunCodeParseTestAndAssert(code, expectedCode);
         }
 
-        [TestMethod]
+        
         public void BuildShouldReturnMainPlusAReferencedFunctionFromTheSameFile()
         {
             var code = @"
@@ -93,8 +95,7 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
 
             void MyOtherMethod(int i) {
                 i = 7;
-            }
-";
+            }";
 
             RunCodeParseTestAndAssert(code, expectedCode);
 
