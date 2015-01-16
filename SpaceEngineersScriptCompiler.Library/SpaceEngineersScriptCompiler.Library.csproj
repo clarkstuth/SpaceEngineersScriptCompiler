@@ -95,6 +95,9 @@
     <Compile Include="ScriptParts\AbstractScriptPart.cs" />
     <Compile Include="ScriptParts\LocalMethodScriptPart.cs" />
     <Compile Include="ScriptParts\MainScriptPart.cs" />
+    <Compile Include="SyntaxWalkers\AbstractSyntaxWalker.cs" />
+    <Compile Include="SyntaxWalkers\ClassFindingSyntaxWalker.cs" />
+    <Compile Include="SyntaxWalkers\MainMethodFindingSyntaxWalker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
