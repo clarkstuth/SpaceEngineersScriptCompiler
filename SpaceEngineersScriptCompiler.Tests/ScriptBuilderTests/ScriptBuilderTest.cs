@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SpaceEngineersScriptCompiler.Library.Exception;
 using SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests;
 using Telerik.JustMock;
 
@@ -39,8 +40,28 @@ namespace SpaceEngineersScriptCompiler.Tests
 
             var result = Builder.Build(GoodFilePath);
             
-            Assert.AreEqual(expectedCode, result.GetCode());
+            Assert.AreEqual(expectedCode, result);
         }
         
+        [TestMethod]
+        [ExpectedException(typeof(MainMethodNotFoundException))]
+        public void BuildShouldThrowAnExceptionIfNoMainMethodIsFound()
+        {
+            var fileContents = @"namespace MyNamespace { class MyClass { void MyMethod() {} }}";
+            
+            AddFileMetadata(GoodFilePath, fileContents);
+
+            try
+            {
+                Builder.Build(GoodFilePath);
+            }
+            catch (MainMethodNotFoundException e)
+            {
+                var expectedMessage = "No valid \"void Main(){}\" method was found in file: " + GoodFilePath;
+                Assert.AreEqual(expectedMessage, e.Message);
+                throw;
+            }    
+        }
+
     }
 }

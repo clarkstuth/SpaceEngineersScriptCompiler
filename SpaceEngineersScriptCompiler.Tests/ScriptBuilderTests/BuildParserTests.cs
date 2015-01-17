@@ -10,9 +10,9 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
         {
             AddFileMetadata(GoodFilePath, code);
 
-            var scriptPart = Builder.Build(GoodFilePath);
+            var result = Builder.Build(GoodFilePath);
 
-            Assert.AreEqual(expectedCode, scriptPart.GetCode());
+            Assert.AreEqual(expectedCode, result);
         }
 
         [TestMethod]
@@ -58,14 +58,14 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
         [TestMethod]
         public void BuildShouldReturnJustMainRemovingUsingNamespaceClassAndLeadingMethod()
         {
-            var code = "using System; namespace AGreatNamespace { public static class DoSomething { private void Main() {} public void Main() {var i = 1 + 2;} } }";
+            var code = "using System; namespace AGreatNamespace { public static class DoSomething { private void NotMain() {} public void Main() {var i = 1 + 2;} } }";
 
             var expectedCode = "void Main() {var i = 1 + 2;}";
 
             RunCodeParseTestAndAssert(code, expectedCode);
         }
 
-        
+        [TestMethod]
         public void BuildShouldReturnMainPlusAReferencedFunctionFromTheSameFile()
         {
             var code = @"
@@ -85,20 +85,33 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
             }";
 
             var expectedCode = @"void Main() {
-                var i = 3 / 2 + 7;
-                MyOtherMethod(i);
-            }
+                        var i = 3 / 2 + 7;
+                        MyOtherMethod(i);
+                    }
 
-            void MyOtherMethod(int i) {
-                i = 7;
-            }";
+                    void MyOtherMethod(int i) {
+                        i = 7;
+                    }";
 
-            RunCodeParseTestAndAssert(code, expectedCode);
+            RunCodeParseTestAndAssert(code.Trim(), expectedCode.Trim());
 
         }
 
+        
+        public void BuildShouldNotIncludeExtraMainFunctionsIfNotCalled()
+        {
+            var code = @"namepsace MyNamespace {
+                            class MyClass {
+                                private void Main() {}
+                                private void NotMain() {}
+                            }
+                         }";
+
+            
+        }
+
         // BuildShouldIgnoreCallsToGridTerminalSystem
-        // 
+        
 
     }
 }

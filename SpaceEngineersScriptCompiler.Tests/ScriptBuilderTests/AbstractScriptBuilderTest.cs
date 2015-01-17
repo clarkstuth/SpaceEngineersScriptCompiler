@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpaceEngineersScriptCompiler.Library;
 using SpaceEngineersScriptCompiler.Library.File;
+using SpaceEngineersScriptCompiler.Library.Model;
 using Telerik.JustMock;
 
 namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
@@ -30,10 +31,10 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
             Mock.Reset();
         }
 
-        protected FileMetadataModel CreateFileMetadata(string fileName, string code)
+        protected FileMetadata CreateFileMetadata(string fileName, string code)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(code);
-            return new FileMetadataModel(fileName, syntaxTree);
+            return new FileMetadata(fileName, syntaxTree);
         }
 
         protected void AddFileMetadata(string fileName, string code)

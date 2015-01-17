@@ -4,15 +4,8 @@ using System.Linq;
 
 namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
 {
+    // TODO - see if we actually need this abstract class.
     abstract class AbstractSyntaxWalker : SyntaxWalker
     {
-        protected SyntaxToken GetChildTokenIdentifier(SyntaxNode node)
-        {
-            var tokenSelectionQuery = from token in node.ChildTokens()
-                    where token.CSharpKind() == SyntaxKind.IdentifierToken
-                    select token;
-
-            return tokenSelectionQuery.FirstOrDefault();
-        }
     }
 }

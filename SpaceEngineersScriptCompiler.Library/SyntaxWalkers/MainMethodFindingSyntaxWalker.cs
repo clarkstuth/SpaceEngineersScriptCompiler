@@ -1,18 +1,19 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SpaceEngineersScriptCompiler.Library.DataExtensions;
 using System.Linq;
 
 namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
 {
     /// <summary>
-    /// Finds all top level void Main() methods within a syntax tree.
+    /// Finds all top level void Main() methods within a class syntax tree.
     /// </summary>
     class MainMethodFindingSyntaxWalker : AbstractSyntaxWalker
     {
-        SyntaxNode MainNode = null;
+        CSharpSyntaxNode MainNode = null;
 
-        public SyntaxNode FindMain(SyntaxNode rootNode)
+        public CSharpSyntaxNode FindMain(CSharpSyntaxNode rootNode)
         {
             MainNode = null;
             Visit(rootNode);
@@ -23,9 +24,14 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
         // looking for a method that matches signature void Main()
         public override void Visit(SyntaxNode node)
         {
+            if (MainNode != null)
+            {
+                return;
+            }
+
             if (node is MethodDeclarationSyntax)
             {
-                var methodName = GetChildTokenIdentifier(node).Text.Trim();
+                var methodName = (node as MethodDeclarationSyntax).GetMethodName();
 
                 var methodReturnTypeToken = from childNode in node.ChildNodes()
                                             where childNode.CSharpKind() == SyntaxKind.PredefinedType
@@ -39,10 +45,8 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
 
                 if (methodName == "Main" && returnType == "void" && string.IsNullOrWhiteSpace(parameterList))
                 {
-                    MainNode = node;
+                    MainNode = node as CSharpSyntaxNode;
                 }
-
-                // do not re-visit base if we are already on a function.
             }
             else
             {

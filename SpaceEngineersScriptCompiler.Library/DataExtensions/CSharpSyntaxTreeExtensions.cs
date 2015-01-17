@@ -9,13 +9,7 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
 {
     public static class CSharpSyntaxTreeExtensions
     {
-        public static SyntaxNode FindMainMethod(this SyntaxTree tree)
-        {
-            var walker = new MainMethodFindingSyntaxWalker();
-            return walker.FindMain(tree.GetRoot());
-        }
-
-        public static Dictionary<string, SyntaxNode> FindClasses(this SyntaxTree tree)
+        public static Dictionary<string, ClassDeclarationSyntax> FindClasses(this SyntaxTree tree)
         {
             var walker = new ClassFindingSyntaxWalker();
             return walker.GetClassMap(tree);

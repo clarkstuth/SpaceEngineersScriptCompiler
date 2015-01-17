@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SpaceEngineersScriptCompiler.Library.DataExtensions;
 using System.Collections.Generic;
 
 namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
@@ -9,11 +10,11 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
     /// </summary>
     class ClassFindingSyntaxWalker : AbstractSyntaxWalker
     {
-        public Dictionary<string, SyntaxNode> ClassMap = null;
+        public Dictionary<string, ClassDeclarationSyntax> ClassMap = null;
 
-        public Dictionary<string, SyntaxNode> GetClassMap(SyntaxTree tree)
+        public Dictionary<string, ClassDeclarationSyntax> GetClassMap(SyntaxTree tree)
         {
-            ClassMap = new Dictionary<string, SyntaxNode>();
+            ClassMap = new Dictionary<string, ClassDeclarationSyntax>();
 
             Visit(tree.GetRoot());
 
@@ -24,9 +25,11 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
         {
             if (node is ClassDeclarationSyntax)
             {
-                var className = GetChildTokenIdentifier(node).Text;
+                var classNode = node as ClassDeclarationSyntax;
 
-                ClassMap.Add(className, node);
+                var className = classNode.GetClassName();
+
+                ClassMap.Add(className, classNode);
             }
             else
             {

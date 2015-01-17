@@ -5,9 +5,9 @@ using SpaceEngineersScriptCompiler.Library.DataExtensions;
 using System.Collections.Concurrent;
 using System.Linq;
 
-namespace SpaceEngineersScriptCompiler.Library.File
+namespace SpaceEngineersScriptCompiler.Library.Model
 {
-    public class FileMetadataModel
+    public class FileMetadata
     {
         /// <summary>
         /// Path to this particular file.
@@ -17,7 +17,7 @@ namespace SpaceEngineersScriptCompiler.Library.File
         /// <summary>
         /// Map of classes that exist in a corresponding file's syntax tree.
         /// </summary>
-        public ConcurrentDictionary<string, SyntaxTree> ClassMap { get; protected set; }
+        public ConcurrentDictionary<string, ClassMetadata> ClassMap { get; protected set; }
 
         /// <summary>
         /// Name of the sub class that contains a void Main() method.
@@ -25,12 +25,18 @@ namespace SpaceEngineersScriptCompiler.Library.File
         /// </summary>
         public string MainMethodClassName { get; protected set; }
 
+        /// <summary>
+        /// Root of the SyntaxTree of this file.
+        /// </summary>
+        public CSharpSyntaxTree SyntaxTreeRoot { get; protected set; }
+
         // TODO : Throw an exception if the SyntaxTree is invalid. (Somewhere)
 
-        public FileMetadataModel(string filePath, SyntaxTree baseSyntaxTree)
+        public FileMetadata(string filePath, SyntaxTree baseSyntaxTree)
         {
+            SyntaxTreeRoot = baseSyntaxTree as CSharpSyntaxTree;
             FilePath = filePath;
-            ClassMap = new ConcurrentDictionary<string, SyntaxTree>();
+            ClassMap = new ConcurrentDictionary<string, ClassMetadata>();
 
             FillClassMap(baseSyntaxTree);
         }
@@ -40,20 +46,20 @@ namespace SpaceEngineersScriptCompiler.Library.File
             var classes = syntaxTree.FindClasses();
             foreach (var className in classes.Keys)
             {
-                var classSyntaxTree = CSharpSyntaxTree.ParseText(classes[className].GetText());
-                ClassMap.TryAdd(className, classSyntaxTree);
+                var classMetadata = new ClassMetadata(classes[className]);
 
-                InitializeMainMethodClassName(className, classSyntaxTree);
+                var classSyntaxTree = CSharpSyntaxTree.ParseText(classes[className].GetText());
+                ClassMap.TryAdd(className, classMetadata);
+
+                InitializeMainMethodClassName();
             }
         }
 
-        private void InitializeMainMethodClassName(string className, SyntaxTree classSyntaxTree)
+        private void InitializeMainMethodClassName()
         {
-            var classMethods = classSyntaxTree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().ToList();
-
-            foreach (var method in classMethods)
+            foreach (var className in ClassMap.Keys)
             {
-                if (method.GetMethodName() == "Main")
+                if (ClassMap[className].GetMethodMap().ContainsKey("Main"))
                 {
                     MainMethodClassName = className;
                 }
