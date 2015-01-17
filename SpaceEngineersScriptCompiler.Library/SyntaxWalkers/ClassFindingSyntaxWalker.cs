@@ -32,10 +32,7 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
                 var classNode = node as ClassDeclarationSyntax;
                 var className = string.Concat(Namespace, ".", classNode.GetClassName());
 
-                System.Console.WriteLine(className);
-
                 ClassMap.Add(className, classNode);
-
                 return;
             }
             

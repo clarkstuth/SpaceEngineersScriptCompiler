@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SpaceEngineersScriptCompiler.Library.DataExtensions;
+using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Linq;
 
@@ -30,6 +31,11 @@ namespace SpaceEngineersScriptCompiler.Library.Model
         /// </summary>
         public CSharpSyntaxTree SyntaxTreeRoot { get; protected set; }
 
+        /// <summary>
+        /// List of fully qualified class names we could possibly depend upon.
+        /// Right now this is more of a guess than a determination.
+        /// </summary>
+        public List<string> ClassDependencies { get; protected set; }
         // TODO : Throw an exception if the SyntaxTree is invalid. (Somewhere not the constructor.)
 
         public FileMetadata(string filePath, SyntaxTree baseSyntaxTree)
@@ -37,8 +43,10 @@ namespace SpaceEngineersScriptCompiler.Library.Model
             SyntaxTreeRoot = baseSyntaxTree as CSharpSyntaxTree;
             FilePath = filePath;
             ClassMap = new ConcurrentDictionary<string, ClassMetadata>();
+            ClassDependencies = new List<string>();
 
             FillClassMap(baseSyntaxTree);
+            FillDependencyList(baseSyntaxTree);
         }
 
         private void FillClassMap(SyntaxTree syntaxTree)
@@ -56,6 +64,35 @@ namespace SpaceEngineersScriptCompiler.Library.Model
                     MainMethodClassName = className;
                 }
             }
+        }
+
+
+        // TODO - this belongs somewhere else.
+        private void FillDependencyList(SyntaxTree syntaxTree)
+        {
+            var usings = syntaxTree.GetCompilationUnitRoot().Usings;
+
+            foreach (var ns in usings)
+            {
+                //Split on space to remove the using from the front of each namespace
+                var nameSpace = ns.ToString().Split(' ')[1];
+                //remove the semicolon from the end of the namespace
+                nameSpace = nameSpace.Replace(';', ' ').Trim();
+
+                var nsParts = ns.ToString().Split('.');
+                var rootNs = nsParts[0];
+
+                // see if this is a namespace we might want to care about
+                // TODO: Make ignored Namespaces into a configurable parameter.
+                if (rootNs != "Microsoft" || rootNs != "System" || rootNs != "Sandbox") {
+                    
+                    // TODO:  get names of declared objects within this executing script.
+                    
+
+                }
+            }
+
+
         }
     }
 }

@@ -24,8 +24,6 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
                                    select childNode;
             var parameterList = methodParameters.FirstOrDefault().ToString().Replace(" ", "");
 
-            System.Console.WriteLine(parameterList);
-
             if (methodName == "Main" && returnType == "void" && parameterList == "()")
             {
                 return true;
