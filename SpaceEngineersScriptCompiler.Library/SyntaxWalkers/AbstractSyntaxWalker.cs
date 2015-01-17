@@ -22,7 +22,9 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
             var methodParameters = from childNode in methodSyntax.ChildNodes()
                                    where childNode.CSharpKind() == SyntaxKind.ParameterList
                                    select childNode;
-            var parameterList = methodParameters.FirstOrDefault().ToString();
+            var parameterList = methodParameters.FirstOrDefault().ToString().Replace(" ", "");
+
+            System.Console.WriteLine(parameterList);
 
             if (methodName == "Main" && returnType == "void" && parameterList == "()")
             {
