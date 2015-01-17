@@ -11,9 +11,9 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
     /// </summary>
     class MainMethodFindingSyntaxWalker : AbstractSyntaxWalker
     {
-        CSharpSyntaxNode MainNode = null;
+        MethodDeclarationSyntax MainNode = null;
 
-        public CSharpSyntaxNode FindMain(CSharpSyntaxNode rootNode)
+        public MethodDeclarationSyntax FindMain(CSharpSyntaxNode rootNode)
         {
             MainNode = null;
             Visit(rootNode);
@@ -31,7 +31,9 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
 
             if (node is MethodDeclarationSyntax)
             {
-                var methodName = (node as MethodDeclarationSyntax).GetMethodName();
+                var methodNode = node as MethodDeclarationSyntax;
+
+                var methodName = methodNode.GetMethodName();
 
                 var methodReturnTypeToken = from childNode in node.ChildNodes()
                                             where childNode.CSharpKind() == SyntaxKind.PredefinedType
@@ -45,7 +47,7 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
 
                 if (methodName == "Main" && returnType == "void" && string.IsNullOrWhiteSpace(parameterList))
                 {
-                    MainNode = node as CSharpSyntaxNode;
+                    MainNode = methodNode;
                 }
             }
             else

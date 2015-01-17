@@ -56,16 +56,6 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
         }
 
         [TestMethod]
-        public void BuildShouldReturnJustMainRemovingUsingNamespaceClassAndLeadingMethod()
-        {
-            var code = "using System; namespace AGreatNamespace { public static class DoSomething { private void NotMain() {} public void Main() {var i = 1 + 2;} } }";
-
-            var expectedCode = "void Main() {var i = 1 + 2;}";
-
-            RunCodeParseTestAndAssert(code, expectedCode);
-        }
-
-        [TestMethod]
         public void BuildShouldReturnMainPlusAMethodFromTheSameFile()
         {
             var code = @"
@@ -89,7 +79,7 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
                         MyOtherMethod(i);
                     }
 
-                    void MyOtherMethod(int i) {
+void MyOtherMethod(int i) {
                         i = 7;
                     }";
 

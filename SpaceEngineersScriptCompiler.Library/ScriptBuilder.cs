@@ -8,6 +8,7 @@ using SpaceEngineersScriptCompiler.Library.Model;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace SpaceEngineersScriptCompiler.Library
 {
@@ -22,7 +23,7 @@ namespace SpaceEngineersScriptCompiler.Library
         }
 
         /// <summary>
-        /// 
+        /// Builds a new complete output string from the given Source file.
         /// </summary>
         /// <param name="filePath"></param>
         /// <exception cref="System.IO.FileNotFoundException"></exception>
@@ -42,16 +43,21 @@ namespace SpaceEngineersScriptCompiler.Library
             // add other class methods to output class
             var otherMethods = classMap[mainClassName].GetMethodMap();
 
+            var stringBuilder = new StringBuilder(BuildSyntaxReturnString(mainMethodNode));
+
             foreach (var method in otherMethods.Keys)
             {
                 if (method != "Main")
                 {
-                    
-                    //mainMethodNode.InsertNodesAfter(mainMethodNode, otherMethods[method].DescendantNodesAndTokensAndSelf());
+                    var methodBody = (otherMethods[method] as MethodDeclarationSyntax).WithModifiers(new SyntaxTokenList());
+
+                    stringBuilder.AppendLine();
+                    stringBuilder.AppendLine();
+                    stringBuilder.Append(methodBody.ToString().Trim());
                 }
             }
 
-            return BuildSyntaxReturnString(mainMethodNode);
+            return stringBuilder.ToString();
         }
 
         private void ThrowExceptionIfFileDoesNotExist(string filePath)
@@ -74,9 +80,10 @@ namespace SpaceEngineersScriptCompiler.Library
 
         private string BuildSyntaxReturnString(CSharpSyntaxNode syntaxNode)
         {
+            // I know all root nodes here should be a MethodDeclarationSyntax due to how the file is built.
             var outputTree = CSharpSyntaxTree.Create(syntaxNode).GetRoot() as MethodDeclarationSyntax;
 
-            // remove all modifiers from the Main method (public, static, sealed etc).
+            // remove all modifiers from the Main method (public, static, abstract, etc).
             outputTree = outputTree.WithModifiers(new SyntaxTokenList());
 
             return outputTree.ToString().Trim();

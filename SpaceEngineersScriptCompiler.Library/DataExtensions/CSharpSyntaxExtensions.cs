@@ -10,7 +10,7 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
 {
     public static class CSharpSyntaxExtensions
     {
-        public static CSharpSyntaxNode FindMainMethod(this CSharpSyntaxNode node)
+        public static MethodDeclarationSyntax FindMainMethod(this CSharpSyntaxNode node)
         {
             var syntaxWalker = new MainMethodFindingSyntaxWalker();
             return syntaxWalker.FindMain(node);
@@ -29,6 +29,12 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
         public static Dictionary<string, MethodDeclarationSyntax> GetPublicMethods(this ClassDeclarationSyntax syntax) {
             var walker = new PublicMethodWalker();
             return walker.FindTopLevelPublicMethods(syntax);
+        }
+
+        public static CSharpSyntaxNode GetEndOfFile(this CSharpSyntaxNode node)
+        {
+            var walker = new EndOfFileWalker();
+            return walker.FindEndOfFile(node);
         }
 
         private static SyntaxToken GetIdentifierToken(SyntaxNode syntax)
