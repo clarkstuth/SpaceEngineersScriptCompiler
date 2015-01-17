@@ -1,12 +1,13 @@
-﻿using System;
-using System.IO;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SpaceEngineersScriptCompiler.Library.DataExtensions;
 using SpaceEngineersScriptCompiler.Library.Exception;
 using SpaceEngineersScriptCompiler.Library.File;
 using SpaceEngineersScriptCompiler.Library.Model;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace SpaceEngineersScriptCompiler.Library
 {
@@ -38,10 +39,19 @@ namespace SpaceEngineersScriptCompiler.Library
             var primaryClassNode = classMap[mainClassName].Node;
             var mainMethodNode = primaryClassNode.FindMainMethod();
 
-            var buildOutput = CSharpSyntaxTree.Create(mainMethodNode).ToString();
+            // add other class methods to output class
+            var otherMethods = classMap[mainClassName].GetMethodMap();
 
-            var voidPos = buildOutput.IndexOf("void");
-            return buildOutput.Substring(voidPos).Trim();
+            foreach (var method in otherMethods.Keys)
+            {
+                if (method != "Main")
+                {
+                    
+                    //mainMethodNode.InsertNodesAfter(mainMethodNode, otherMethods[method].DescendantNodesAndTokensAndSelf());
+                }
+            }
+
+            return BuildSyntaxReturnString(mainMethodNode);
         }
 
         private void ThrowExceptionIfFileDoesNotExist(string filePath)
@@ -60,6 +70,16 @@ namespace SpaceEngineersScriptCompiler.Library
                 var error = "No valid \"void Main(){}\" method was found in file: " + filePath;
                 throw new MainMethodNotFoundException(error);
             }
+        }
+
+        private string BuildSyntaxReturnString(CSharpSyntaxNode syntaxNode)
+        {
+            var outputTree = CSharpSyntaxTree.Create(syntaxNode).GetRoot() as MethodDeclarationSyntax;
+
+            // remove all modifiers from the Main method (public, static, sealed etc).
+            outputTree = outputTree.WithModifiers(new SyntaxTokenList());
+
+            return outputTree.ToString().Trim();
         }
 
     }

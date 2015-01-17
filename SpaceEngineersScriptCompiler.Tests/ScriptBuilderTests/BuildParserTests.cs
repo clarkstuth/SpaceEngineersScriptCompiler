@@ -66,7 +66,7 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
         }
 
         [TestMethod]
-        public void BuildShouldReturnMainPlusAReferencedFunctionFromTheSameFile()
+        public void BuildShouldReturnMainPlusAMethodFromTheSameFile()
         {
             var code = @"
             using System;
