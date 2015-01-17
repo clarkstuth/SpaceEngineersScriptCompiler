@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SpaceEngineersScriptCompiler.Library.DataExtensions;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
 {

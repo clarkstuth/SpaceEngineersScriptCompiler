@@ -4,7 +4,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SpaceEngineersScriptCompiler.Library.DataExtensions;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
-using System.Linq;
 
 namespace SpaceEngineersScriptCompiler.Library.Model
 {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpaceEngineersScriptCompiler.Library;
-using SpaceEngineersScriptCompiler.Library.File;
 using SpaceEngineersScriptCompiler.Library.Model;
 using Telerik.JustMock;
 

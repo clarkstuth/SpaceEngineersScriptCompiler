@@ -2,13 +2,12 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SpaceEngineersScriptCompiler.Library.SyntaxWalkers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SpaceEngineersScriptCompiler.Library.DataExtensions
 {
-    public static class CSharpSyntaxExtensions
+    static class CSharpSyntaxExtensions
     {
         public static string GetMethodName(this MethodDeclarationSyntax syntax)
         {

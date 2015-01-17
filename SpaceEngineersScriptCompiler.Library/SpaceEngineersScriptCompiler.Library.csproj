@@ -87,11 +87,9 @@
     <Compile Include="DataExtensions\CSharpSyntaxTreeExtensions.cs" />
     <Compile Include="Exception\InvalidFileFormatException.cs" />
     <Compile Include="Exception\MainMethodNotFoundException.cs" />
-    <Compile Include="File\FileImplementation.cs" />
     <Compile Include="Model\ClassMetadata.cs" />
     <Compile Include="Model\ThreadSafeFileCollection.cs" />
     <Compile Include="Model\FileMetadata.cs" />
-    <Compile Include="File\IFileAccess.cs" />
     <Compile Include="ScriptBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SyntaxWalkers\AbstractSyntaxWalker.cs" />

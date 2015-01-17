@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SpaceEngineersScriptCompiler.Library.DataExtensions;
 using SpaceEngineersScriptCompiler.Library.Exception;
-using SpaceEngineersScriptCompiler.Library.File;
 using SpaceEngineersScriptCompiler.Library.Model;
 using System;
 using System.IO;

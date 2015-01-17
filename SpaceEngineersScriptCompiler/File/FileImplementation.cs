@@ -1,4 +1,4 @@
-﻿namespace SpaceEngineersScriptCompiler.Library.File
+﻿namespace SpaceEngineersScriptCompiler.File
 {
     public class FileImplementation : IFileAccess
     {
