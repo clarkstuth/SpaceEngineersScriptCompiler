@@ -26,7 +26,18 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
                 var methodNode = node as MethodDeclarationSyntax;
 
                 var methodName = methodNode.GetMethodName();
-                Methods.Add(methodName, methodNode);
+
+                if (methodName == "Main")
+                {
+                    if (IsMainMethodValid(methodNode))
+                    {
+                        Methods.Add(methodName, methodNode);
+                    }
+                }
+                else
+                {
+                    Methods.Add(methodName, methodNode);
+                }
             }
             else
             {

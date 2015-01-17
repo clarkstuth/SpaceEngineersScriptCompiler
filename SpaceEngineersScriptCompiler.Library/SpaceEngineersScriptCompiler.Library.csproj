@@ -97,7 +97,6 @@
     <Compile Include="SyntaxWalkers\AbstractSyntaxWalker.cs" />
     <Compile Include="SyntaxWalkers\ClassFindingSyntaxWalker.cs" />
     <Compile Include="SyntaxWalkers\EndOfFileWalker.cs" />
-    <Compile Include="SyntaxWalkers\MainMethodFindingSyntaxWalker.cs" />
     <Compile Include="SyntaxWalkers\PublicMethodWalker.cs" />
   </ItemGroup>
   <ItemGroup>

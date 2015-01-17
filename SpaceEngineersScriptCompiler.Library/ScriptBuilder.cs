@@ -37,8 +37,8 @@ namespace SpaceEngineersScriptCompiler.Library
             var mainClassName = FileCollection[filePath].MainMethodClassName;
             var classMap = FileCollection[filePath].ClassMap;
 
-            var primaryClassNode = classMap[mainClassName].Node;
-            var mainMethodNode = primaryClassNode.FindMainMethod();
+            var classMetadata = classMap[mainClassName];
+            var mainMethodNode = classMetadata.GetMethodMap()["Main"];
 
             // add other class methods to output class
             var otherMethods = classMap[mainClassName].GetMethodMap();

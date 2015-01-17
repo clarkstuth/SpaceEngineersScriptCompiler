@@ -10,12 +10,6 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
 {
     public static class CSharpSyntaxExtensions
     {
-        public static MethodDeclarationSyntax FindMainMethod(this CSharpSyntaxNode node)
-        {
-            var syntaxWalker = new MainMethodFindingSyntaxWalker();
-            return syntaxWalker.FindMain(node);
-        }
-
         public static string GetMethodName(this MethodDeclarationSyntax syntax)
         {
             return GetIdentifierToken(syntax).Text;

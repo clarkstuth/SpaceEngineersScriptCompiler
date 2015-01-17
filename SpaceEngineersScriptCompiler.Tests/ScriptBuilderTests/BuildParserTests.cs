@@ -121,6 +121,32 @@ int ThirdMethod() {
             RunCodeParseTestAndAssert(code, expectedCode);
         }
 
+        [TestMethod]
+        public void BuildShouldIgnoreMethodsWithNonStandardMainMethodSignatures()
+        {
+            var code = @"using Sandbox.ModAPI.InGame;
+
+namepsace MyNamespace {
+    class MyClass {
+        private void Main() {
+            // this main doesn't do anything
+        }
+        private int Main() {
+            int j = i;
+        }
+        public static void Main(int val)
+        {
+            //another invalid main
+        }
+    }
+}";
+            var expectedCode = @"void Main() {
+            // this main doesn't do anything
+            }";
+
+            RunCodeParseTestAndAssert(code, expectedCode);
+        }
+
         // BuildShouldIgnoreCallsToGridTerminalSystem
         
 
