@@ -87,17 +87,38 @@ void MyOtherMethod(int i) {
 
         }
 
-        
-        public void BuildShouldNotIncludeExtraMainFunctionsIfNotCalled()
+        [TestMethod]
+        public void BuildShouldReturnMainPlusMultipleMethodsFromTheSameFile()
         {
-            var code = @"namepsace MyNamespace {
-                            class MyClass {
-                                private void Main() {}
-                                private void NotMain() {}
-                            }
-                         }";
+            var code = @"using Sandbox.ModAPI.InGame;
 
-            
+namepsace MyNamespace {
+    class MyClass {
+        private void Main() {
+            // this main doesn't do anything
+        }
+        private void SecondMethod(int i) {
+            int j = i;
+        }
+        private int ThirdMethod() {
+            return ""something"";
+        }
+    }
+}";
+
+            var expectedCode = @"void Main() {
+            // this main doesn't do anything
+        }
+
+void SecondMethod(int i) {
+            int j = i;
+        }
+
+int ThirdMethod() {
+            return ""something"";
+        }";
+
+            RunCodeParseTestAndAssert(code, expectedCode);
         }
 
         // BuildShouldIgnoreCallsToGridTerminalSystem
