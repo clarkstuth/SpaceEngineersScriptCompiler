@@ -12,12 +12,12 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
     {
         public static string GetMethodName(this MethodDeclarationSyntax syntax)
         {
-            return GetIdentifierToken(syntax).Text;
+            return syntax.GetIdentifierToken().Text;
         }
 
         public static string GetClassName(this ClassDeclarationSyntax syntax)
         {
-            return GetIdentifierToken(syntax).Text;
+            return syntax.GetIdentifierToken().Text;
         }
 
         public static Dictionary<string, MethodDeclarationSyntax> GetPublicMethods(this ClassDeclarationSyntax syntax) {
@@ -25,20 +25,14 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
             return walker.FindTopLevelPublicMethods(syntax);
         }
 
-        public static CSharpSyntaxNode GetEndOfFile(this CSharpSyntaxNode node)
-        {
-            var walker = new EndOfFileWalker();
-            return walker.FindEndOfFile(node);
-        }
-
-        private static SyntaxToken GetIdentifierToken(SyntaxNode syntax)
+        public static SyntaxToken GetIdentifierToken(this SyntaxNode syntax)
         {
             var identifierQuery = from token in syntax.ChildTokens()
-                            where token.CSharpKind() == SyntaxKind.IdentifierToken
-                            select token;
+                                  where token.CSharpKind() == SyntaxKind.IdentifierToken
+                                  select token;
 
             return identifierQuery.FirstOrDefault();
         }
-        
+
     }
 }

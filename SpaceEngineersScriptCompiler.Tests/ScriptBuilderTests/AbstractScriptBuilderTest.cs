@@ -43,5 +43,14 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
             FileCollection.TryAdd(fileName, metadata);
         }
 
+        protected void RunCodeParseTestAndAssert(string code, string expectedCode)
+        {
+            AddFileMetadata(GoodFilePath, code);
+
+            var result = Builder.Build(GoodFilePath);
+
+            Assert.AreEqual(expectedCode, result);
+        }
+
     }
 }

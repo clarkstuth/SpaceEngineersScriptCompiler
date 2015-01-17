@@ -4,17 +4,9 @@ using Telerik.JustMock;
 namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
 {
     [TestClass]
-    public class BuildParserTests : AbstractScriptBuilderTest
+    public class FunctionParsingTests : AbstractScriptBuilderTest
     {
-        private void RunCodeParseTestAndAssert(string code, string expectedCode)
-        {
-            AddFileMetadata(GoodFilePath, code);
-
-            var result = Builder.Build(GoodFilePath);
-
-            Assert.AreEqual(expectedCode, result);
-        }
-
+        
         [TestMethod]
         public void BuildShouldReturnJustMainRemovingNamespaceAndClass()
         {
@@ -149,15 +141,5 @@ namepsace MyNamespace {
 
         // BuildShouldIgnoreCallsToGridTerminalSystem
         
-        [TestMethod]
-        public void BuildShouldBeAbleToDetectMainMethodsWithSpaces()
-        {
-            var code = @"namespace MyNamespace { class MyClass { void Main(     ) {} }}";
-            var expectedCode = @"void Main(     ) {}";
-
-            RunCodeParseTestAndAssert(code, expectedCode);
-        }
-
-
     }
 }

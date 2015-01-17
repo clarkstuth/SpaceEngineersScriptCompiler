@@ -30,7 +30,7 @@ namespace SpaceEngineersScriptCompiler.Library.Model
         /// </summary>
         public CSharpSyntaxTree SyntaxTreeRoot { get; protected set; }
 
-        // TODO : Throw an exception if the SyntaxTree is invalid. (Somewhere)
+        // TODO : Throw an exception if the SyntaxTree is invalid. (Somewhere not the constructor.)
 
         public FileMetadata(string filePath, SyntaxTree baseSyntaxTree)
         {
@@ -51,22 +51,11 @@ namespace SpaceEngineersScriptCompiler.Library.Model
                 var classSyntaxTree = CSharpSyntaxTree.ParseText(classes[className].GetText());
                 ClassMap.TryAdd(className, classMetadata);
 
-                InitializeMainMethodClassName();
-            }
-        }
-
-        private void InitializeMainMethodClassName()
-        {
-            foreach (var className in ClassMap.Keys)
-            {
-                if (ClassMap[className].GetMethodMap().ContainsKey("Main"))
+                if (classMetadata.GetMethodMap().ContainsKey("Main"))
                 {
                     MainMethodClassName = className;
                 }
             }
         }
-
-
-
     }
 }

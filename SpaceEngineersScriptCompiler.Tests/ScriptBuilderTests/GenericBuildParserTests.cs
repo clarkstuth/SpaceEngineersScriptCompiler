@@ -63,5 +63,16 @@ namespace SpaceEngineersScriptCompiler.Tests
             }    
         }
 
+        [TestMethod]
+        public void BuildShouldBeAbleToDetectMainMethodsWithSpaces()
+        {
+            var code = @"namespace MyNamespace { class MyClass { void Main(     ) {} }}";
+            var expectedCode = @"void Main(     ) {}";
+
+
+
+            RunCodeParseTestAndAssert(code, expectedCode);
+        }
+
     }
 }

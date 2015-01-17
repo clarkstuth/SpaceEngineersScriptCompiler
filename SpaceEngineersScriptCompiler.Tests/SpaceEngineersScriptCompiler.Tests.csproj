@@ -98,9 +98,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ScriptBuilderTests\AbstractScriptBuilderTest.cs" />
-    <Compile Include="ScriptBuilderTests\BuildParserTests.cs" />
-    <Compile Include="ScriptBuilderTests\ScriptBuilderTest.cs" />
+    <Compile Include="ScriptBuilderTests\FunctionParsingTests.cs" />
+    <Compile Include="ScriptBuilderTests\GenericBuildParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScriptBuilderTests\ObjectParsingTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpaceEngineersScriptCompiler.Library\SpaceEngineersScriptCompiler.Library.csproj">
