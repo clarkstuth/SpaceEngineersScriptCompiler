@@ -142,7 +142,7 @@ namepsace MyNamespace {
 }";
             var expectedCode = @"void Main() {
             // this main doesn't do anything
-            }";
+        }";
 
             RunCodeParseTestAndAssert(code, expectedCode);
         }

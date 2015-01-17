@@ -19,12 +19,12 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
                                         select childNode;
             var returnType = methodReturnTypeToken.FirstOrDefault().GetText().ToString().Trim();
 
-            var methodParameters = from childNode in methodSyntax.ChildTokens()
+            var methodParameters = from childNode in methodSyntax.ChildNodes()
                                    where childNode.CSharpKind() == SyntaxKind.ParameterList
                                    select childNode;
-            var parameterList = methodParameters.FirstOrDefault().Text;
+            var parameterList = methodParameters.FirstOrDefault().ToString();
 
-            if (methodName == "Main" && returnType == "void" && string.IsNullOrWhiteSpace(parameterList))
+            if (methodName == "Main" && returnType == "void" && parameterList == "()")
             {
                 return true;
             }
