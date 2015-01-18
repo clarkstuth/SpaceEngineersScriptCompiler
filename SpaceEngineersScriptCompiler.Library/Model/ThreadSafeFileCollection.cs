@@ -9,5 +9,4 @@ namespace SpaceEngineersScriptCompiler.Library.Model
     public class ThreadSafeFileCollection : ConcurrentDictionary<string, FileMetadata>
     {
     }
-
 }

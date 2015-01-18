@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SpaceEngineersScriptCompiler.Library.DataExtensions;
+using SpaceEngineersScriptCompiler.Library.SyntaxWalkers;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 
@@ -17,7 +18,11 @@ namespace SpaceEngineersScriptCompiler.Library.Model
         /// <summary>
         /// Map of classes that exist in a corresponding file's syntax tree.
         /// </summary>
-        public ConcurrentDictionary<string, ClassMetadata> ClassMap { get; protected set; }
+        protected readonly Dictionary<string, ClassMetadata> _classMap;
+        public IReadOnlyDictionary<string, ClassMetadata> ClassMap
+        {
+            get { return _classMap; }
+        }
 
         /// <summary>
         /// Name of the sub class that contains a void Main() method.
@@ -30,33 +35,25 @@ namespace SpaceEngineersScriptCompiler.Library.Model
         /// </summary>
         public CSharpSyntaxTree SyntaxTreeRoot { get; protected set; }
 
-        /// <summary>
-        /// List of fully qualified class names we could possibly depend upon.
-        /// Right now this is more of a guess than a determination.
-        /// </summary>
-        public List<string> ClassDependencies { get; protected set; }
         // TODO : Throw an exception if the SyntaxTree is invalid. (Somewhere not the constructor.)
 
-        public FileMetadata(string filePath, SyntaxTree baseSyntaxTree)
+        public FileMetadata(string filePath, CSharpSyntaxTree baseSyntaxTree)
         {
-            SyntaxTreeRoot = baseSyntaxTree as CSharpSyntaxTree;
+            SyntaxTreeRoot = baseSyntaxTree;
             FilePath = filePath;
-            ClassMap = new ConcurrentDictionary<string, ClassMetadata>();
-            ClassDependencies = new List<string>();
+            _classMap = new Dictionary<string, ClassMetadata>();
 
             FillClassMap(baseSyntaxTree);
-            FillDependencyList(baseSyntaxTree);
         }
 
-        private void FillClassMap(SyntaxTree syntaxTree)
+        private void FillClassMap(CSharpSyntaxTree syntaxTree)
         {
             var classes = syntaxTree.FindClasses();
             foreach (var className in classes.Keys)
             {
                 var classMetadata = new ClassMetadata(classes[className]);
 
-                var classSyntaxTree = CSharpSyntaxTree.ParseText(classes[className].GetText());
-                ClassMap.TryAdd(className, classMetadata);
+                _classMap.Add(className, classMetadata);
 
                 if (classMetadata.GetMethodMap().ContainsKey("Main"))
                 {
@@ -65,33 +62,5 @@ namespace SpaceEngineersScriptCompiler.Library.Model
             }
         }
 
-
-        // TODO - this belongs somewhere else.
-        private void FillDependencyList(SyntaxTree syntaxTree)
-        {
-            var usings = syntaxTree.GetCompilationUnitRoot().Usings;
-
-            foreach (var ns in usings)
-            {
-                //Split on space to remove the using from the front of each namespace
-                var nameSpace = ns.ToString().Split(' ')[1];
-                //remove the semicolon from the end of the namespace
-                nameSpace = nameSpace.Replace(';', ' ').Trim();
-
-                var nsParts = ns.ToString().Split('.');
-                var rootNs = nsParts[0];
-
-                // see if this is a namespace we might want to care about
-                // TODO: Make ignored Namespaces into a configurable parameter.
-                if (rootNs != "Microsoft" || rootNs != "System" || rootNs != "Sandbox") {
-                    
-                    // TODO:  get names of declared objects within this executing script.
-                    
-
-                }
-            }
-
-
-        }
     }
 }

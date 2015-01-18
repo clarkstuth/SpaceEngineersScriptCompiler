@@ -19,12 +19,18 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
             return syntax.GetIdentifierToken().Text;
         }
 
-        public static Dictionary<string, MethodDeclarationSyntax> GetPublicMethods(this ClassDeclarationSyntax syntax) {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="syntax"></param>
+        /// <returns>key is MethodName</returns>
+        public static IReadOnlyDictionary<string, MethodDeclarationSyntax> GetPublicMethods(this ClassDeclarationSyntax syntax)
+        {
             var walker = new PublicMethodWalker();
             return walker.FindTopLevelPublicMethods(syntax);
         }
 
-        public static SyntaxToken GetIdentifierToken(this SyntaxNode syntax)
+        public static SyntaxToken GetIdentifierToken(this CSharpSyntaxNode syntax)
         {
             var identifierQuery = from token in syntax.ChildTokens()
                                   where token.CSharpKind() == SyntaxKind.IdentifierToken

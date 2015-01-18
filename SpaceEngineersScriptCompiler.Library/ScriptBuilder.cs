@@ -5,6 +5,7 @@ using SpaceEngineersScriptCompiler.Library.DataExtensions;
 using SpaceEngineersScriptCompiler.Library.Exception;
 using SpaceEngineersScriptCompiler.Library.Model;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,10 +15,13 @@ namespace SpaceEngineersScriptCompiler.Library
     public class ScriptBuilder
     {
         protected ThreadSafeFileCollection FileCollection { get; set; }
+        protected IDependencyResolver DependencyResolver { get; set; }
+
         protected string FileName { get; set; }
 
-        public ScriptBuilder(ThreadSafeFileCollection fileCollection)
+        public ScriptBuilder(IDependencyResolver dependencyResolver, ThreadSafeFileCollection fileCollection)
         {
+            DependencyResolver = dependencyResolver;
             FileCollection = fileCollection;
         }
 
@@ -39,11 +43,40 @@ namespace SpaceEngineersScriptCompiler.Library
             var classMetadata = classMap[mainClassName];
             var mainMethodNode = classMetadata.GetMethodMap()["Main"];
 
-            // add other class methods to output class
-            var otherMethods = classMap[mainClassName].GetMethodMap();
-
+            // create Main() starter output string
             var stringBuilder = new StringBuilder(BuildSyntaxReturnString(mainMethodNode));
 
+            // add other class methods to output string
+            var otherMethods = classMap[mainClassName].GetMethodMap();
+            AddMethodsToScript(otherMethods, stringBuilder);
+
+            // add other objects to output string
+            var otherObjects = DependencyResolver.ResolveObjectDependencies(filePath);
+            otherObjects.Keys.ToList().ForEach(depFilePath =>
+            {
+                otherObjects[depFilePath].ToList().ForEach(depClassName =>
+                {
+                    var classNode = FileCollection[depFilePath].ClassMap[depClassName];
+
+                    var classBody = (classNode.Node as ClassDeclarationSyntax).WithModifiers(classNode.Node.Modifiers);
+
+                    stringBuilder.AppendLine();
+                    stringBuilder.AppendLine();
+                    stringBuilder.Append(classBody.ToString().Trim());
+                });
+
+                Console.WriteLine(depFilePath);
+                otherObjects[depFilePath].ToList().ForEach(Console.WriteLine);
+            });
+
+            // TODO: Actually process these files.
+
+
+            return stringBuilder.ToString();
+        }
+
+        private static void AddMethodsToScript(IReadOnlyDictionary<string, MethodDeclarationSyntax> otherMethods, StringBuilder stringBuilder)
+        {
             foreach (var method in otherMethods.Keys)
             {
                 if (method != "Main")
@@ -55,8 +88,6 @@ namespace SpaceEngineersScriptCompiler.Library
                     stringBuilder.Append(methodBody.ToString().Trim());
                 }
             }
-
-            return stringBuilder.ToString();
         }
 
         private void ThrowExceptionIfFileDoesNotExist(string filePath)
@@ -87,7 +118,6 @@ namespace SpaceEngineersScriptCompiler.Library
 
             return outputTree.ToString().Trim();
         }
-
     }
 }
 

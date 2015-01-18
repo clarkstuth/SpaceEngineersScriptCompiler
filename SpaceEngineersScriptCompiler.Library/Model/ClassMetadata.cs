@@ -8,14 +8,14 @@ namespace SpaceEngineersScriptCompiler.Library.Model
     {
         public ClassDeclarationSyntax Node { get; protected set; }
 
-        protected Dictionary<string, MethodDeclarationSyntax> MethodMap { get; set; }
+        protected IReadOnlyDictionary<string, MethodDeclarationSyntax> MethodMap { get; set; }
 
         public ClassMetadata(ClassDeclarationSyntax node)
         {
             Node = node;
         }
 
-        public Dictionary<string, MethodDeclarationSyntax> GetMethodMap()
+        public IReadOnlyDictionary<string, MethodDeclarationSyntax> GetMethodMap()
         {
             if (MethodMap == null)
             {

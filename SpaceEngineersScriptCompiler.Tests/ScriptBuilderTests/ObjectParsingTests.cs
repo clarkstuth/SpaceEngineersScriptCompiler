@@ -11,7 +11,7 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
         [TestMethod]
         public void BuildShouldBeAbleToIncludeOtherReferencedObjects()
         {
-            var code1 = @"namespace MyNamepsace {
+            var code1 = @"namespace MyNamespace {
     class MyClass
     {
         public override void Main()
@@ -26,16 +26,16 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
     }
 }";
             AddFileMetadata(GoodFilePath, code1);
-            AddFileMetadata(GoodFilePath, code2);
+            AddFileMetadata(GoodFilePath2, code2);
 
             var expectedCode = @"void Main()
         {
             var someOtherObject = new MyOtherObject();
         }
+
 class MyOtherObject
     {
-    }
-";
+    }";
 
             var result = Builder.Build(GoodFilePath);
 

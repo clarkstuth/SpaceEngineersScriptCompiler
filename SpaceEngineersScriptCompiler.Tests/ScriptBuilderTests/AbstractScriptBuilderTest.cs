@@ -9,6 +9,7 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
     public abstract class AbstractScriptBuilderTest
     {
         protected ScriptBuilder Builder { get; set; }
+        protected IDependencyResolver DependencyResolver { get; set; }
 
         protected string GoodFilePath {get;set;}
 
@@ -20,8 +21,9 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
             GoodFilePath = @"C:\Users\MyUser\SomeValidProject\SomeValidFile.cs";
 
             FileCollection = new ThreadSafeFileCollection();
+            DependencyResolver = new DefaultDependencyResolver(FileCollection);
 
-            Builder = new ScriptBuilder(FileCollection);
+            Builder = new ScriptBuilder(DependencyResolver, FileCollection); 
         }
 
         [TestCleanup]
@@ -32,7 +34,7 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
 
         protected FileMetadata CreateFileMetadata(string fileName, string code)
         {
-            var syntaxTree = CSharpSyntaxTree.ParseText(code);
+            var syntaxTree = CSharpSyntaxTree.ParseText(code) as CSharpSyntaxTree;
             return new FileMetadata(fileName, syntaxTree);
         }
 

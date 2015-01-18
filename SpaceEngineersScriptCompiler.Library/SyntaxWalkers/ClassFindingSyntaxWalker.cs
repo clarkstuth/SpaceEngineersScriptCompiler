@@ -14,7 +14,7 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
         private Dictionary<string, ClassDeclarationSyntax> ClassMap = null;
         private string Namespace { get; set; }
 
-        public Dictionary<string, ClassDeclarationSyntax> GetClassMap(SyntaxTree tree)
+        public Dictionary<string, ClassDeclarationSyntax> GetClassMap(CSharpSyntaxTree tree)
         {
             ClassMap = new Dictionary<string, ClassDeclarationSyntax>();
             Namespace = null;
