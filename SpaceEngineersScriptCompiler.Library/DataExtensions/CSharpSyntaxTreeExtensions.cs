@@ -34,8 +34,7 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
             {
                 foreach (var stmt in usings)
                 {
-
-                    possibleClassList.Add(string.Concat(stmt, ".", name));
+                    possibleClassList.Add(string.Concat(stmt.Name, ".", name));
                 }
 
                 possibleClassList.Add(string.Concat(thisTreesNamespace, ".", name).Trim());

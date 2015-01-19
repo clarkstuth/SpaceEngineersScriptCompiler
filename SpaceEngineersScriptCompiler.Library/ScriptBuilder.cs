@@ -52,9 +52,10 @@ namespace SpaceEngineersScriptCompiler.Library
 
             // add other objects to output string
             var otherObjects = DependencyResolver.ResolveObjectDependencies(filePath);
-            otherObjects.Keys.ToList().ForEach(depFilePath =>
+
+            foreach (var depFilePath in otherObjects.Keys)
             {
-                otherObjects[depFilePath].ToList().ForEach(depClassName =>
+                foreach (var depClassName in otherObjects[depFilePath])
                 {
                     var classNode = FileCollection[depFilePath].ClassMap[depClassName];
 
@@ -63,11 +64,8 @@ namespace SpaceEngineersScriptCompiler.Library
                     stringBuilder.AppendLine();
                     stringBuilder.AppendLine();
                     stringBuilder.Append(classBody.ToString().Trim());
-                });
-
-                Console.WriteLine(depFilePath);
-                otherObjects[depFilePath].ToList().ForEach(Console.WriteLine);
-            });
+                }
+            }
 
             // TODO: Actually process these files.
 
