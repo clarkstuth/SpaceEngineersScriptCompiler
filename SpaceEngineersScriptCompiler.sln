@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler", "SpaceEngineersScriptCompiler\SpaceEngineersScriptCompiler.csproj", "{7B653641-251F-460E-8AF7-E8B7BCB48D66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler.Library.Tests", "SpaceEngineersScriptCompiler.Tests\SpaceEngineersScriptCompiler.Library.Tests.csproj", "{2EF0950D-7C2B-4264-A4A4-68980470DA64}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler.Library.Tests", "SpaceEngineersScriptCompiler.Library.Tests\SpaceEngineersScriptCompiler.Library.Tests.csproj", "{2EF0950D-7C2B-4264-A4A4-68980470DA64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler.Library", "SpaceEngineersScriptCompiler.Library\SpaceEngineersScriptCompiler.Library.csproj", "{FABDDCE8-1BA7-4317-957D-309972A32E66}"
 EndProject
@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.travis.yml = .travis.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler.Tests", "SpaceEngineersScriptCompiler.Tests\SpaceEngineersScriptCompiler.Tests.csproj", "{A8FD4AEF-BB74-4E19-8418-5F00DF7A919E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{FABDDCE8-1BA7-4317-957D-309972A32E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FABDDCE8-1BA7-4317-957D-309972A32E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FABDDCE8-1BA7-4317-957D-309972A32E66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8FD4AEF-BB74-4E19-8418-5F00DF7A919E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8FD4AEF-BB74-4E19-8418-5F00DF7A919E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8FD4AEF-BB74-4E19-8418-5F00DF7A919E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8FD4AEF-BB74-4E19-8418-5F00DF7A919E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
