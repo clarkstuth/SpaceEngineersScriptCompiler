@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpaceEngineersScriptCompiler.Library;
 using SpaceEngineersScriptCompiler.Library.Model;
+using System.Collections.Generic;
 using Telerik.JustMock;
 
 namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
@@ -20,8 +21,11 @@ namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
         {
             GoodFilePath = @"C:\Users\MyUser\SomeValidProject\SomeValidFile.cs";
 
+            var bannedObjectNames = new List<string>{"GridTerminalSystem"};
+            var bannedNamespaces = new List<string> { "System", "Sandbox" };
+
             FileCollection = new ThreadSafeFileCollection();
-            DependencyResolver = new DefaultDependencyResolver(FileCollection);
+            DependencyResolver = new DefaultDependencyResolver(FileCollection, bannedObjectNames, bannedNamespaces);
 
             Builder = new ScriptBuilder(DependencyResolver, FileCollection); 
         }

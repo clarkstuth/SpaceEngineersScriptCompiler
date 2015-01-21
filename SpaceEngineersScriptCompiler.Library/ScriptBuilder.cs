@@ -16,7 +16,7 @@ namespace SpaceEngineersScriptCompiler.Library
     {
         protected ThreadSafeFileCollection FileCollection { get; set; }
         protected IDependencyResolver DependencyResolver { get; set; }
-
+        
         protected string FileName { get; set; }
 
         public ScriptBuilder(IDependencyResolver dependencyResolver, ThreadSafeFileCollection fileCollection)
@@ -46,7 +46,7 @@ namespace SpaceEngineersScriptCompiler.Library
             // create Main() starter output string
             var stringBuilder = new StringBuilder(BuildSyntaxReturnString(mainMethodNode));
 
-            // add other class methods to output string
+            // add other class methods and vars to output string
             var otherMethods = classMap[mainClassName].GetMethodMap();
             AddMethodsToScript(otherMethods, stringBuilder);
             var propsAndVars = classMap[mainClassName].Node.GetPropsAndVars();
@@ -55,6 +55,7 @@ namespace SpaceEngineersScriptCompiler.Library
             // add other objects to output string
             var otherObjects = DependencyResolver.ResolveObjectDependencies(filePath);
 
+            // TODO - refactor all of this crap.
             foreach (var depFilePath in otherObjects.Keys)
             {
                 foreach (var depClassName in otherObjects[depFilePath])

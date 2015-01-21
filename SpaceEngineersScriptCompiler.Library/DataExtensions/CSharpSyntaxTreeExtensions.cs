@@ -9,21 +9,16 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
 {
     static class CSharpSyntaxTreeExtensions
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="tree"></param>
-        /// <returns>key is ClassName</returns>
         public static IReadOnlyDictionary<string, ClassDeclarationSyntax> FindClasses(this CSharpSyntaxTree tree)
         {
             var walker = new ClassFindingSyntaxWalker();
             return walker.GetClassMap(tree);
         }
 
-        public static IReadOnlyList<string> FindPossibleDependencies(this CSharpSyntaxTree tree)
+        public static IReadOnlyList<string> FindPossibleDependencies(this CSharpSyntaxTree tree, List<string> ignoredObjectNames)
         {
             var possibleClassList = new List<string>();
-            var walker = new ObjectCreationFindingSyntaxWalker();
+            var walker = new ObjectCreationFindingSyntaxWalker(ignoredObjectNames);
             var root = tree.GetCompilationUnitRoot();
 
             var usings = root.Usings;

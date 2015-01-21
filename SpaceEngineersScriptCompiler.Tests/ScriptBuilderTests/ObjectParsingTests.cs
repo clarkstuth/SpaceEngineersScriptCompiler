@@ -164,6 +164,35 @@ class ThisNamespaceObject
 
         }
 
+        [TestMethod]
+        public void BuildShouldIgnoreCallsToBannedObjects()
+        {
+            var code = @"namespace MyNamespace {
+    class MyClass {
+        private void Main() {
+            var myVar = new GridTerminalSystem();
+        }
+    }
+}";
+            var code2 = @"namespace MyNamespace {
+    class GridTerminalSystem 
+    {
+    }
+}";
+
+            AddFileMetadata(GoodFilePath, code);
+            AddFileMetadata(GoodFilePath2, code2);
+
+            var expectedCode = @"void Main() {
+            var myVar = new GridTerminalSystem();
+        }";
+
+            var output = Builder.Build(GoodFilePath);
+
+            Assert.AreEqual(expectedCode, output);
+        }
+        
+
 
 //        [TestMethod]
 //        public void BuildShouldBeAbleToIgnoreReservedNamespaces()

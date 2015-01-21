@@ -9,14 +9,18 @@ namespace SpaceEngineersScriptCompiler.Library
     public class DefaultDependencyResolver : IDependencyResolver
     {
         protected ThreadSafeFileCollection FileCollection { get; set; }
+        protected List<string> BannedObjectNames { get; set; }
+        protected List<string> BannedNamespaces { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="fileCollection">Collection of all Metadata to be scanned for Dependencies.</param>
-        public DefaultDependencyResolver(ThreadSafeFileCollection fileCollection)
+        public DefaultDependencyResolver(ThreadSafeFileCollection fileCollection, List<string> bannedObjectNames, List<string> bannedNamespaces)
         {
             FileCollection = fileCollection;
+            BannedObjectNames = bannedObjectNames;
+            BannedNamespaces = bannedNamespaces;
         }
 
         public IDictionary<string, IList<string>> ResolveObjectDependencies(string fileName)
@@ -42,7 +46,7 @@ namespace SpaceEngineersScriptCompiler.Library
             }
             alreadyProcessedFiles.Add(filePath);
 
-            var possibleDependencies = fileMetadata.SyntaxTreeRoot.FindPossibleDependencies();
+            var possibleDependencies = fileMetadata.SyntaxTreeRoot.FindPossibleDependencies(BannedObjectNames);
 
             foreach (var fileName in FileCollection.Keys)
             {

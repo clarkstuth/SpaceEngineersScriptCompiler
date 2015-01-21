@@ -9,7 +9,14 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
 {
     class ObjectCreationFindingSyntaxWalker : SyntaxWalker
     {
-        Dictionary<string, ObjectCreationExpressionSyntax> ObjectCreations;
+        private Dictionary<string, ObjectCreationExpressionSyntax> ObjectCreations;
+
+        private List<string> IgnoredObjectNames;
+
+        public ObjectCreationFindingSyntaxWalker(List<string> ignoredObjectNames)
+        {
+            IgnoredObjectNames = ignoredObjectNames;
+        }
 
         public Dictionary<string, ObjectCreationExpressionSyntax> FindObjectCreationExpressions(CSharpSyntaxNode node)
         {
@@ -25,7 +32,10 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
                 var objNode = node as ObjectCreationExpressionSyntax;
                 var name = objNode.Type.ToString();
 
-                ObjectCreations.Add(name, objNode);
+                if (IgnoredObjectNames.Any() && !IgnoredObjectNames.Contains(name))
+                {
+                    ObjectCreations.Add(name, objNode);
+                }
             }
 
             base.Visit(node);

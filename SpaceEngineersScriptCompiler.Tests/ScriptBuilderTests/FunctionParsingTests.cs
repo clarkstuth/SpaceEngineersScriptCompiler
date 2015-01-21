@@ -139,7 +139,5 @@ namepsace MyNamespace {
             RunCodeParseTestAndAssert(code, expectedCode);
         }
 
-        // BuildShouldIgnoreCallsToGridTerminalSystem
-        
     }
 }
