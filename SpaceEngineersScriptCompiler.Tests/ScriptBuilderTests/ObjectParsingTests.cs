@@ -164,11 +164,6 @@ class ThisNamespaceObject
 
         }
 
-        [TestMethod]
-        public void BuildShouldBeAbleToLoadPropertiesAndVariablesFromTargetedMainClass()
-        {
-            throw new System.NotImplementedException();
-        }
 
 //        [TestMethod]
 //        public void BuildShouldBeAbleToIgnoreReservedNamespaces()

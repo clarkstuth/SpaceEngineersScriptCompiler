@@ -39,5 +39,11 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
             return identifierQuery.FirstOrDefault();
         }
 
+        public static IEnumerable<CSharpSyntaxNode> GetPropsAndVars(this ClassDeclarationSyntax syntax)
+        {
+            var walker = new VariableAndPropertyFindingSyntaxWalker();
+            return walker.FindVariablesAndProperties(syntax);
+        }
+
     }
 }

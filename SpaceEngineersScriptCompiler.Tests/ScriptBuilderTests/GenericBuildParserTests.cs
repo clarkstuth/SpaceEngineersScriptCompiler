@@ -22,7 +22,7 @@ namespace SpaceEngineersScriptCompiler.Tests
             }
             catch (FileNotFoundException e)
             {
-                var expectedMessage = @"Unable to process file.  File not found: " + badfilePath;
+                var expectedMessage = "Unable to process file.  File not found: " + badfilePath;
                 Assert.AreEqual(expectedMessage, e.Message);
                 throw;
             }
@@ -32,7 +32,7 @@ namespace SpaceEngineersScriptCompiler.Tests
         public void BuildShouldReturnAMainScriptPartWithMatchingCodeBlockIfSyntaxIsValid()
         {
             var fileContents =
-                @"namespace MyNamespace { class MyClass { void Main() {var myObj = new MyObject();  var result = myObj.SomeMethod();}}}";
+                "namespace MyNamespace { class MyClass { void Main() {var myObj = new MyObject();  var result = myObj.SomeMethod();}}}";
 
             var expectedCode = "void Main() {var myObj = new MyObject();  var result = myObj.SomeMethod();}";
 
@@ -47,7 +47,7 @@ namespace SpaceEngineersScriptCompiler.Tests
         [ExpectedException(typeof(MainMethodNotFoundException))]
         public void BuildShouldThrowAnExceptionIfNoMainMethodIsFound()
         {
-            var fileContents = @"namespace MyNamespace { class MyClass { void MyMethod() {} }}";
+            var fileContents = "namespace MyNamespace { class MyClass { void MyMethod() {} }}";
             
             AddFileMetadata(GoodFilePath, fileContents);
 
@@ -66,10 +66,30 @@ namespace SpaceEngineersScriptCompiler.Tests
         [TestMethod]
         public void BuildShouldBeAbleToDetectMainMethodsWithSpaces()
         {
-            var code = @"namespace MyNamespace { class MyClass { void Main(     ) {} }}";
-            var expectedCode = @"void Main(     ) {}";
+            var code = "namespace MyNamespace { class MyClass { void Main(     ) {} }}";
+            var expectedCode = "void Main(     ) {}";
 
+            RunCodeParseTestAndAssert(code, expectedCode);
+        }
 
+        [TestMethod]
+        public void BuildShouldBeAbleToLoadBuiltInPropertiesAndVariablesFromTargetedMainClass()
+        {
+            var code = @"namespace Test
+{
+    class TestClass
+    {
+        public int myVar;
+        protected int MyProperty {get;set;}
+        
+        public void Main() {}
+    }
+}";
+
+            var expectedCode = @"int MyProperty {get;set;}
+int myVar;
+
+void Main() {}";
 
             RunCodeParseTestAndAssert(code, expectedCode);
         }

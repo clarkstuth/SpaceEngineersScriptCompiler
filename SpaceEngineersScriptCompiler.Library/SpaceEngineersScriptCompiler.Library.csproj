@@ -99,6 +99,7 @@
     <Compile Include="SyntaxWalkers\ClassFindingSyntaxWalker.cs" />
     <Compile Include="SyntaxWalkers\ObjectCreationFindingSyntaxWalker.cs" />
     <Compile Include="SyntaxWalkers\PublicMethodWalker.cs" />
+    <Compile Include="SyntaxWalkers\VariableAndPropertyFindingSyntaxWalker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

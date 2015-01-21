@@ -49,6 +49,8 @@ namespace SpaceEngineersScriptCompiler.Library
             // add other class methods to output string
             var otherMethods = classMap[mainClassName].GetMethodMap();
             AddMethodsToScript(otherMethods, stringBuilder);
+            var propsAndVars = classMap[mainClassName].Node.GetPropsAndVars();
+            AddVarsToScript(propsAndVars, stringBuilder);
 
             // add other objects to output string
             var otherObjects = DependencyResolver.ResolveObjectDependencies(filePath);
@@ -86,6 +88,30 @@ namespace SpaceEngineersScriptCompiler.Library
                     stringBuilder.Append(methodBody.ToString().Trim());
                 }
             }
+        }
+
+        private static void AddVarsToScript(IEnumerable<SyntaxNode> propsAndVars, StringBuilder stringBuilder)
+        {
+            if (propsAndVars.Any())
+            {
+                stringBuilder.Insert(0, Environment.NewLine);
+            }
+            foreach (var prop in propsAndVars)
+            {
+                string body;
+                if (prop is PropertyDeclarationSyntax)
+                {
+                    body = (prop as PropertyDeclarationSyntax).WithModifiers(new SyntaxTokenList()).ToString();
+                }
+                else
+                {
+                    body = (prop as VariableDeclarationSyntax).ToString() + ';';
+                }
+                    
+                stringBuilder.Insert(0, Environment.NewLine);
+                stringBuilder.Insert(0, body);
+            }
+
         }
 
         private void ThrowExceptionIfFileDoesNotExist(string filePath)
