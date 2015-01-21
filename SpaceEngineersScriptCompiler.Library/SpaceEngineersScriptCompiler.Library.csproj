@@ -83,11 +83,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataExtensions\CollectionDataExtensions.cs" />
     <Compile Include="DataExtensions\CSharpSyntaxExtensions.cs" />
     <Compile Include="DataExtensions\CSharpSyntaxTreeExtensions.cs" />
     <Compile Include="DefaultDependencyResolver.cs" />
-    <Compile Include="Exception\InvalidFileFormatException.cs" />
     <Compile Include="Exception\MainMethodNotFoundException.cs" />
     <Compile Include="IDependencyResolver.cs" />
     <Compile Include="Model\ClassMetadata.cs" />

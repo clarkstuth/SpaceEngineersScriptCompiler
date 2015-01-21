@@ -82,14 +82,14 @@ namespace SpaceEngineersScriptCompiler.Tests
         public int myVar;
         protected int MyProperty {get;set;}
         
-        public void Main() {}
+        public void Main() {var i = 2;}
     }
 }";
 
             var expectedCode = @"int MyProperty {get;set;}
 int myVar;
 
-void Main() {}";
+void Main() {var i = 2;}";
 
             RunCodeParseTestAndAssert(code, expectedCode);
         }
