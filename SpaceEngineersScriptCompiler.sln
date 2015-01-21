@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler", "SpaceEngineersScriptCompiler\SpaceEngineersScriptCompiler.csproj", "{7B653641-251F-460E-8AF7-E8B7BCB48D66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler.Tests", "SpaceEngineersScriptCompiler.Tests\SpaceEngineersScriptCompiler.Tests.csproj", "{2EF0950D-7C2B-4264-A4A4-68980470DA64}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler.Library.Tests", "SpaceEngineersScriptCompiler.Tests\SpaceEngineersScriptCompiler.Library.Tests.csproj", "{2EF0950D-7C2B-4264-A4A4-68980470DA64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceEngineersScriptCompiler.Library", "SpaceEngineersScriptCompiler.Library\SpaceEngineersScriptCompiler.Library.csproj", "{FABDDCE8-1BA7-4317-957D-309972A32E66}"
 EndProject

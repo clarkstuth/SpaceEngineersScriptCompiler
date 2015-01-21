@@ -1,10 +1,9 @@
 ﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpaceEngineersScriptCompiler.Library.Exception;
-using SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests;
 using Telerik.JustMock;
 
-namespace SpaceEngineersScriptCompiler.Tests
+namespace SpaceEngineersScriptCompiler.Library.Tests.ScriptBuilderTests
 {
     [TestClass]
     public class ScriptBuilderTest : AbstractScriptBuilderTest

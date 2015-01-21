@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpaceEngineersScriptCompiler.Library.Model;
 
-namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
+namespace SpaceEngineersScriptCompiler.Library.Tests.ScriptBuilderTests
 {
     [TestClass]
     public class ObjectParsingTests : AbstractScriptBuilderTest

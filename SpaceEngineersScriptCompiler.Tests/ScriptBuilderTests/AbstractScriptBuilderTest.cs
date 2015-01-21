@@ -5,7 +5,7 @@ using SpaceEngineersScriptCompiler.Library.Model;
 using System.Collections.Generic;
 using Telerik.JustMock;
 
-namespace SpaceEngineersScriptCompiler.Tests.ScriptBuilderTests
+namespace SpaceEngineersScriptCompiler.Library.Tests.ScriptBuilderTests
 {
     public abstract class AbstractScriptBuilderTest
     {

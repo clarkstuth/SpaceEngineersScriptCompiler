@@ -6,8 +6,8 @@
     <ProjectGuid>{2EF0950D-7C2B-4264-A4A4-68980470DA64}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SpaceEngineersScriptCompiler.Tests</RootNamespace>
-    <AssemblyName>SpaceEngineersScriptCompiler.Tests</AssemblyName>
+    <RootNamespace>SpaceEngineersScriptCompiler.Library.Tests</RootNamespace>
+    <AssemblyName>SpaceEngineersScriptCompiler.Library.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
