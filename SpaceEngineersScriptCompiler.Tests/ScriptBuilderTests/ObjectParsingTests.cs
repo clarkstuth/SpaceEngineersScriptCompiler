@@ -193,43 +193,48 @@ class ThisNamespaceObject
         }
         
 
+        [TestMethod]
+        public void BuildShouldIgnoreReferencesToBannedNamespaces()
+        {
+            var code = @"using Sandbox.ModAPI.Ingame;
+using System;
 
-//        [TestMethod]
-//        public void BuildShouldBeAbleToIgnoreReservedNamespaces()
-//        {
-//            var code = @"
-//using Sytem.MyCustomNamespace;
-//
-//namespace MySpaceEngineers
-//{
-//    class MyDoorOpener
-//    {
-//        void Main()
-//        {
-//            var object = new MyCustomObject();
-//        }
-//    }
-//}
-//";
-//            var code2 = @"
-//namespace Sytem.MyCustomNamespace
-//{
-//    public class MyCustomObject()
-//{}
-//}
-//";
-//            AddFileMetadata(GoodFilePath, code);
-//            AddFileMetadata(GoodFilePath2, code2);
+namespace SomeNamespace
+{
+    internal class MyClass
+    {
+        public void Main()
+        {
+            var myVar = new InGameTypeObject();
+            var myvar2 = new SystemTypeObject();
+        }
+    }
+}";
 
-//            var expectedCode = @"void Main()
-//        {
-//            var object = new MyCustomObject();
-//        }";
+            var code2 = @"namespace Sandbox.ModAPI.Ingame
+{
+    class InGameTypeObject{}
+}";
 
-//            var result = Builder.Build(GoodFilePath);
+            var code3 = @"namespace System
+{
+    class SystemTypeObject{}
+}";
 
-//            Assert.AreEqual(expectedCode, result);
-//        }
+            AddFileMetadata(GoodFilePath, code);
+            AddFileMetadata(GoodFilePath2, code2);
+            AddFileMetadata(@"C:\3rdpath.file", code3);
+
+            var expectedCode = @"void Main()
+        {
+            var myVar = new InGameTypeObject();
+            var myvar2 = new SystemTypeObject();
+        }";
+
+            var output = Builder.Build(GoodFilePath);
+
+            Assert.AreEqual(expectedCode, output);
+        }
 
     }
 }

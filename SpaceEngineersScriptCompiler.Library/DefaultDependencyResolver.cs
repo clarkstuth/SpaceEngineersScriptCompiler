@@ -46,7 +46,7 @@ namespace SpaceEngineersScriptCompiler.Library
             }
             alreadyProcessedFiles.Add(filePath);
 
-            var possibleDependencies = fileMetadata.SyntaxTreeRoot.FindPossibleDependencies(BannedObjectNames);
+            var possibleDependencies = fileMetadata.SyntaxTreeRoot.FindPossibleDependencies(BannedObjectNames, BannedNamespaces);
 
             foreach (var fileName in FileCollection.Keys)
             {

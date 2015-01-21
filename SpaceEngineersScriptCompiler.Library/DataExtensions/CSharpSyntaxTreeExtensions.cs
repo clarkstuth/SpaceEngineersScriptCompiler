@@ -15,7 +15,9 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
             return walker.GetClassMap(tree);
         }
 
-        public static IReadOnlyList<string> FindPossibleDependencies(this CSharpSyntaxTree tree, List<string> ignoredObjectNames)
+        public static IReadOnlyList<string> FindPossibleDependencies(this CSharpSyntaxTree tree,
+                                                                    List<string> ignoredObjectNames,
+                                                                    List<string> ignoredNamespaces)
         {
             var possibleClassList = new List<string>();
             var walker = new ObjectCreationFindingSyntaxWalker(ignoredObjectNames);
@@ -29,7 +31,11 @@ namespace SpaceEngineersScriptCompiler.Library.DataExtensions
             {
                 foreach (var stmt in usings)
                 {
-                    possibleClassList.Add(string.Concat(stmt.Name, ".", name));
+                    var nameSpace = stmt.Name.ToString();
+                    if (!ignoredNamespaces.Any((str) => { return nameSpace.StartsWith(str); }))
+                    {
+                        possibleClassList.Add(string.Concat(nameSpace, ".", name));
+                    }
                 }
 
                 possibleClassList.Add(string.Concat(thisTreesNamespace, ".", name).Trim());
