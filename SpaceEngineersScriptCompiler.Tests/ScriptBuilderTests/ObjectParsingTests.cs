@@ -113,7 +113,55 @@ class MyLoadedObject
         [TestMethod]
         public void BuildShouldBeAbleToResolveDependenciesInBothTheCurrentAndRemoteNamespaces()
         {
-            throw new System.NotImplementedException();
+            var code1 = @"using Some.Other.Namespace;
+
+namespace MyNamespace
+{
+    class MyClass
+    {
+        protected static override void Main()
+        {
+            var obj1 = new OtherNamespaceObject();
+            var obj2 = new ThisNamespaceObject();
+        }
+    }
+}";
+
+            var code2 = @"namespace Some.Other.Namespace
+{
+    class OtherNamespaceObject
+    {
+    }
+}";
+
+            var code3 = @"namespace MyNamespace
+{
+    class ThisNamespaceObject
+    {
+    }
+}";
+
+            AddFileMetadata(GoodFilePath, code1);
+            AddFileMetadata(GoodFilePath2, code2);
+            AddFileMetadata("path", code3);
+
+            var expectedCode = @"void Main()
+        {
+            var obj1 = new OtherNamespaceObject();
+            var obj2 = new ThisNamespaceObject();
+        }
+
+class OtherNamespaceObject
+    {
+    }
+
+class ThisNamespaceObject
+    {
+    }";
+            var output = Builder.Build(GoodFilePath);
+
+            Assert.AreEqual(expectedCode, output);
+
         }
 
         [TestMethod]
