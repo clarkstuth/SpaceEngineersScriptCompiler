@@ -9,7 +9,7 @@ namespace SpaceEngineersScriptCompiler.Library.SyntaxWalkers
     /// <summary>
     /// Finds all top level classes within a given syntax tree.
     /// </summary>
-    class ClassFindingSyntaxWalker : AbstractSyntaxWalker
+    class ClassFindingSyntaxWalker : SyntaxWalker
     {
         private Dictionary<string, ClassDeclarationSyntax> ClassMap = null;
         private string Namespace { get; set; }

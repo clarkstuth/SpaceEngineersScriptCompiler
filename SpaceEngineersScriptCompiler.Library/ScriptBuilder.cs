@@ -55,7 +55,6 @@ namespace SpaceEngineersScriptCompiler.Library
             // add other objects to output string
             var otherObjects = DependencyResolver.ResolveObjectDependencies(filePath);
 
-            // TODO - refactor all of this crap.
             foreach (var depFilePath in otherObjects.Keys)
             {
                 foreach (var depClassName in otherObjects[depFilePath])
@@ -69,9 +68,6 @@ namespace SpaceEngineersScriptCompiler.Library
                     stringBuilder.Append(classBody.ToString().Trim());
                 }
             }
-
-            // TODO: Actually process these files.
-
 
             return stringBuilder.ToString();
         }

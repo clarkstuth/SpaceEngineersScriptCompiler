@@ -12,8 +12,5 @@ namespace SpaceEngineersScriptCompiler.Library
         /// <param name="fileName">Name of the file to use as root for resolve dependencies.</param>
         /// <returns></returns>
         IDictionary<string, IList<string>> ResolveObjectDependencies(string fileName);
-
-        // TODO: Make depenendency and property resolution methods on this same interface.
-
     }
 }

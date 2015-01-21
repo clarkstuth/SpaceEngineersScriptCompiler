@@ -93,7 +93,6 @@
     <Compile Include="Model\FileMetadata.cs" />
     <Compile Include="ScriptBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SyntaxWalkers\AbstractSyntaxWalker.cs" />
     <Compile Include="SyntaxWalkers\ClassFindingSyntaxWalker.cs" />
     <Compile Include="SyntaxWalkers\ObjectCreationFindingSyntaxWalker.cs" />
     <Compile Include="SyntaxWalkers\PublicMethodWalker.cs" />

@@ -35,8 +35,6 @@ namespace SpaceEngineersScriptCompiler.Library.Model
         /// </summary>
         public CSharpSyntaxTree SyntaxTreeRoot { get; protected set; }
 
-        // TODO : Throw an exception if the SyntaxTree is invalid. (Somewhere not the constructor.)
-
         public FileMetadata(string filePath, CSharpSyntaxTree baseSyntaxTree)
         {
             SyntaxTreeRoot = baseSyntaxTree;
